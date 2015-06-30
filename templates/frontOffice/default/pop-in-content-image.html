@@ -1,0 +1,5 @@
+{* render pop-in content from a Thelia content image *}
+
+{loop name="content.image" type="image" content=$content_id limit="1"}
+    <img src="{$IMAGE_URL}" alt="{$TITLE}">
+{/loop}

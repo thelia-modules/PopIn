@@ -1,0 +1,268 @@
+{* PopIn module configuration page *}
+
+{extends file="admin-layout.tpl"}
+
+{block name="after-bootstrap-css"}
+    {stylesheets file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+{/block}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'tools'}
+{/block}
+
+{block name="page-title"}{intl l='PopIn module configuration' d='popin.bo.default'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+{block name="check-module"}PopIn{/block}
+
+{block name="main-content"}
+    <div id="wrapper" class="container">
+
+        {if $general_error}
+            <div class="alert alert-danger">
+                {$general_error}
+            </div>
+        {/if}
+
+        <div class="general-block-decorator">
+            <div class="table-responsive">
+                <table class="table table-striped" id="pop_in_campaign-table">
+                    <caption class="clearfix">
+                        {intl l="Pop-in campaigns" d="popin.bo.default"}
+                    </caption>
+
+                    <thead>
+                    <tr class="row">
+                        <th class="col-md-3">{intl l='Start' d='popin.bo.default'}</th>
+                        <th class="col-md-3">{intl l='End' d='popin.bo.default'}</th>
+                        <th class="col-md-2">{intl l='Content' d='popin.bo.default'}</th>
+                        <th class="col-md-2"></th>
+                        <th class="col-md-2"></th>
+                    </tr>
+                    </thead>
+
+                    {function name='pop_in_campaign_row'}
+                        {if $mode == 'edit'}
+                            {$form_name = 'pop_in_campaign.update'}
+                            {$form_action = {url path='/admin/module/PopIn/pop_in_campaign/edit'}}
+                        {elseif $mode == 'create'}
+                            {$form_name = 'pop_in_campaign.create'}
+                            {$form_action = {url path='/admin/module/PopIn/pop_in_campaign'}}
+                        {/if}
+                        <tr class="row">
+                            <td colspan="1000">
+                                {form name=$form_name}
+                                    <form method="post" action="{$form_action}">
+                                        {render_form_field form=$form field="success_url" value={url path='/admin/module/PopIn/'}}
+                                        {if $ID}
+                                            {form_field form=$form field="id"}
+                                                <input name="{$name}" type="hidden" value="{$ID}">
+                                            {/form_field}
+                                        {/if}
+                                        {form_hidden_fields form=$form}
+                                        <div class="col-md-3 form-group">
+                                            {form_field form=$form field="start"}
+                                                <div class="input-group">
+                                                    <input name="{$name}"
+                                                           type="{$type}"
+                                                           class="form-control datetime-picker"
+                                                           data-date-format="{$label_attr.moment_js_date_format}"
+                                                           {if $START}value="{format_date date=$START format=$label_attr.php_datetime_format}"{/if}>
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            {/form_field}
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            {form_field form=$form field="end"}
+                                                <div class="input-group">
+                                                    <input name="{$name}"
+                                                           type="{$type}"
+                                                           class="form-control datetime-picker"
+                                                           data-date-format="{$label_attr.moment_js_date_format}"
+                                                           {if $END}value="{format_date date=$END format=$label_attr.php_datetime_format}"{/if}>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                                </div>
+                                            {/form_field}
+                                        </div>
+                                        <div class="col-md-2 form-group content-source-type-form-group">
+                                            {form_field form=$form field="content_source_type"}
+                                                <select name="{$name}" class="form-control">
+                                                    <option value="" selected></option>
+                                                    {foreach $choices as $choice}
+                                                        <option value="{$choice->value}"
+                                                                {if $CONTENT_SOURCE_TYPE == $choice->value}selected{/if}>
+                                                            {$choice->label}
+                                                        </option>
+                                                    {/foreach}
+                                                </select>
+                                            {/form_field}
+                                        </div>
+                                        <div class="col-md-2 form-group content-source-id-form-group">
+                                            {form_field form=$form field="content_source_id"}
+                                            {$content_source_id = $CONTENT_SOURCE_ID}
+                                                <div class="content-source-id-field content-source-id-field-default">
+                                                    <input name="{$name}" type="text" class="form-control"
+                                                           value="{$CONTENT_SOURCE_ID}">
+                                                </div>
+                                                <div class="content-source-id-field content-source-id-field-content"
+                                                     style="display: none;">
+                                                    <select name="{$name}" class="form-control">
+                                                        <option value="" selected></option>
+                                                        {loop name="pop-in-campaign-content-source-content" type="content"}
+                                                            <option value="{$ID}"
+                                                                    {if $ID == $content_source_id}selected{/if}>{$TITLE}</option>
+                                                        {/loop}
+                                                    </select>
+                                                    <span class="help-block">{intl l='This content will be displayed in the pop-in.' d='popin.bo.default'}</span>
+                                                </div>
+                                                <div class="content-source-id-field content-source-id-field-content-image"
+                                                     style="display: none;">
+                                                    <select name="{$name}" class="form-control">
+                                                        <option value="" selected></option>
+                                                        {loop name="pop-in-campaign-content-source-content-image" type="content" folder={config key="popin.image_folder_id"}}
+                                                            <option value="{$ID}"
+                                                                    {if $ID == $content_source_id}selected{/if}>{$TITLE}</option>
+                                                        {/loop}
+                                                    </select>
+                                                    <span class="help-block">{intl l='The first image in this content will be displayed in the pop-in.' d='popin.bo.default'}</span>
+                                                </div>
+                                                <div class="content-source-id-field content-source-id-field-template"
+                                                     style="display: none;">
+                                                    <input name="{$name}" type="text" class="form-control"
+                                                           value="{$CONTENT_SOURCE_ID}">
+                                                    <span class="help-block">{intl l='This template will be displayed in the pop-in.' d='popin.bo.default'}</span>
+                                                </div>
+                                                <div class="content-source-id-field content-source-id-field-hook"
+                                                     style="display: none;">
+                                                    <input name="{$name}" type="text" class="form-control"
+                                                           value="{$CONTENT_SOURCE_ID}">
+                                                    <span class="help-block">{intl l='The pop-in.content hook will be called to display the pop-in. The content of this field will be available in the hook.' d='popin.bo.default'}</span>
+                                                </div>
+                                            {/form_field}
+                                        </div>
+                                        <div class="col-md-2 btn-group">
+                                            {if $mode == 'create'}
+                                                {loop name="auth-edit" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="PopIn"}
+                                                    <button type="submit"
+                                                            class="btn btn-default"
+                                                            title="{intl l='Add a campaign' d='popin.bo.default'}">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                    </button>
+                                                {/loop}
+                                            {elseif $mode == 'edit'}
+                                                {loop name="auth-edit" type="auth" role="ADMIN" resource="admin.module" access="UPDATE" module="PopIn"}
+                                                    <button type="submit"
+                                                            class="btn btn-default"
+                                                            title="{intl l='Edit this campaign' d='popin.bo.default'}">
+                                                        <i class="glyphicon glyphicon-edit"></i>
+                                                    </button>
+                                                {/loop}
+                                                {loop name="auth-delete" type="auth" role="ADMIN" resource="admin.module" access="DELETE" module="PopIn"}
+                                                    <a class="btn btn-default"
+                                                       href="{token_url path='/admin/module/PopIn/pop_in_campaign/delete' pop_in_campaign_id=$pop_in_campaign_id}"
+                                                       title="{intl l='Delete this campaign' d='popin.bo.default'}">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </a>
+                                                {/loop}
+                                            {/if}
+                                        </div>
+                                    </form>
+                                {/form}
+                            </td>
+                        </tr>
+                    {/function}
+
+                    <tbody>
+                    {loop name="pop-in-campaign-list" type="pop-in-campaign" order=$order}
+                    {$pop_in_campaign_id=$ID}
+                    {call name='pop_in_campaign_row' mode='edit'}
+                    {/loop}
+
+                    {loop name="auth-create" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="PopIn"}
+                    {call name='pop_in_campaign_row' mode='create'}
+                    {/loop}
+                    </tbody>
+
+                    {ifloop rel="pop-in-campaign-list"}
+                        <tfoot>
+                        <tr>
+                            <td colspan="1000">
+                                {include
+                                file           = "includes/pagination.html"
+
+                                loop_ref       = "pop-in-campaign-list"
+                                max_page_count = 20
+                                page_url       = "{url path="/admin/module/PopIn" order=$order target='pop_in_campaign-table'}"
+                                }
+                            </td>
+                        </tr>
+                        </tfoot>
+                    {/ifloop}
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="javascript-initialization"}
+    {javascripts file='assets/js/moment-with-locales.min.js'}
+        <script type="text/javascript" src="{$asset_url}"></script>
+    {/javascripts}
+
+    {javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+        <script type="text/javascript" src="{$asset_url}"></script>
+    {/javascripts}
+    <script type="text/javascript">
+        (function ($) {
+            $('.datetime-picker').datetimepicker({
+                lang: '{lang attr="code"}',
+                showClear: true,
+                sideBySide: true,
+                useSeconds: true
+            });
+
+            function displayContentSourceField($form) {
+                var $contentSourceType = $form
+                        .find('.content-source-type-form-group')
+                        .find('select')
+                        .val();
+                if ($contentSourceType == '') {
+                    $contentSourceType = 'default';
+                }
+
+                var $contentSourceIdFormGroup = $form.find('.content-source-id-form-group');
+
+                // hide and disable the fields for all content types
+                $contentSourceIdFormGroup
+                        .find('.content-source-id-field')
+                        .hide()
+                        .find('.form-control')
+                        .prop('disabled', true);
+                // show and enable the field for the selected content type
+                $contentSourceIdFormGroup
+                        .find('.content-source-id-field-' + $contentSourceType)
+                        .show()
+                        .find('.form-control')
+                        .prop('disabled', false);
+            }
+
+            $('#pop_in_campaign-table').find('form').each(function () {
+                var $form = $(this);
+                displayContentSourceField($form);
+                $(this)
+                        .find('.content-source-type-form-group')
+                        .find('select')
+                        .on('change', function (event) {
+                            displayContentSourceField($(this).parents('form'), true);
+                        });
+            });
+        })(jQuery);
+    </script>
+{/block}

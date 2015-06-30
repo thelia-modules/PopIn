@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="popin.config" path="/admin/module/PopIn" methods="get">
+        <default key="_controller">PopIn:Configuration:config</default>
+    </route>
+    <route id="popin.pop_in_campaign.create" path="/admin/module/PopIn/pop_in_campaign" methods="post">
+        <default key="_controller">PopIn:PopInCampaign:create</default>
+    </route>
+    <route id="popin.pop_in_campaign.edit" path="/admin/module/PopIn/pop_in_campaign/edit" methods="post">
+        <default key="_controller">PopIn:PopInCampaign:processUpdate</default>
+    </route>
+    <route id="popin.pop_in_campaign.delete" path="/admin/module/PopIn/pop_in_campaign/delete" methods="get">
+        <default key="_controller">PopIn:PopInCampaign:delete</default>
+    </route>
+
+</routes>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://thelia.net/schema/dic/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <loop name="pop-in-campaign" class="PopIn\Loop\PopInCampaign"/>
+    </loops>
+
+    <forms>
+        <form name="pop_in_campaign.create" class="PopIn\Form\PopInCampaignCreateForm"/>
+        <form name="pop_in_campaign.update" class="PopIn\Form\PopInCampaignUpdateForm"/>
+    </forms>
+
+    <hooks>
+        <hook id="popin.hook.front" class="PopIn\Hook\Front\FrontHook" scope="request">
+            <tag name="hook.event_listener" type="frontoffice" event="main.body-top"/>
+            <tag name="hook.event_listener" type="frontoffice" event="main.javascript-initialization"/>
+            <tag name="hook.event_listener" type="frontoffice" event="main.stylesheet"/>
+        </hook>
+        <hook id="popin.hook.back" class="PopIn\Hook\Back\BackHook" scope="request">
+            <tag name="hook.event_listener" type="backoffice" event="main.top-menu-tools"/>
+            <tag name="hook.event_listener" type="backoffice" event="tools.col1-bottom"/>
+            <argument type="service" id="router.popin"/>
+        </hook>
+    </hooks>
+
+    <services>
+        <service id="action.popin.pop_in_campaign_table" class="PopIn\Action\PopInCampaignAction">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+        <service id="popin.form.type.pop_in_campaign_id" class="PopIn\Form\Type\PopInCampaignIdType">
+            <argument id="thelia.translator" type="service"/>
+            <tag name="thelia.form.type"/>
+        </service>
+    </services>
+
+</config>

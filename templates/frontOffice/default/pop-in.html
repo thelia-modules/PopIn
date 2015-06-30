@@ -1,0 +1,18 @@
+{* render the pop-in *}
+
+<div id="pop-in">
+    <div class="mask">
+        <div class="content">
+            {if $campaign.content_source_type == 'content'}
+                {include file='pop-in-content.html' content_id=$campaign.content_source_id}
+            {elseif $campaign.content_source_type == 'content-image'}
+                {include file='pop-in-content-image.html' content_id=$campaign.content_source_id}
+            {elseif $campaign.content_source_type == 'template'}
+                {include file=$campaign.content_source_id}
+            {elseif $campaign.content_source_type == 'hook'}
+                {hook name='pop-in.content' campaign=$campaign.id}
+            {/if}
+            <span class="close-button close-on-click glyphicon glyphicon-remove"></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+
+    <table name="pop_in_campaign" namespace="PopIn\Model">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="start" type="TIMESTAMP" />
+        <column name="end" type="TIMESTAMP" />
+        <column name="content_source_type" type="VARCHAR" />
+        <column name="content_source_id" type="VARCHAR" />
+    </table>
+
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>

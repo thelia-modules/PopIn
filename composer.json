@@ -1,0 +1,12 @@
+{
+  "name": "thelia/pop-in-module",
+  "license": "LGPL-3.0+",
+  "type": "thelia-module",
+  "extra": {
+    "installer-name": "PopIn"
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "thelia/installer": "~1.0"
+  }
+}

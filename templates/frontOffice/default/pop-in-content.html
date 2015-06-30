@@ -1,0 +1,37 @@
+{* render pop-in content from a Thelia content *}
+
+<article>
+    {hook name="content.content-top" content="$content_id"}
+
+    {loop name="content" type="content" id=$content_id limit="1"}
+        <h1 id="main-label" class="page-header">{$TITLE}</h1>
+    {if $CHAPO}
+        <div class="chapo">
+            {$CHAPO}
+        </div>
+    {/if}
+    {if $DESCRIPTION}
+        <div class="description">
+            {$DESCRIPTION nofilter}
+        </div>
+    {/if}
+
+    {ifloop rel="blog.document"}
+        <div class="documents">
+            <ul>
+                {loop name="blog.document"  type="document" content="{$ID}"}
+                    <li><a href="{$DOCUMENT_URL nofilter}" target="_blank">{$TITLE}</a></li>
+                {/loop}
+            </ul>
+        </div>
+    {/ifloop}
+
+    {if $POSTSCRIPTUM}
+        <small class="postscriptum">
+            {$POSTSCRIPTUM}
+        </small>
+    {/if}
+    {/loop}
+
+    {hook name="content.content-bottom" content="$content_id"}
+</article>
