@@ -55,7 +55,7 @@
                         <tr class="row">
                             <td colspan="1000">
                                 {form name=$form_name}
-                                    <form method="post" action="{$form_action}">
+                                    <form id="form{$ID}" method="post" action="{$form_action}">
                                         {render_form_field form=$form field="success_url" value={url path='/admin/module/PopIn/'}}
                                         {if $ID}
                                             {form_field form=$form field="id"}
@@ -173,6 +173,19 @@
                                                 {/loop}
                                             {/if}
                                         </div>
+
+                                        <div class="col-md-12 content-source-id-form-group">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group content-source-id-field content-source-id-field-free-content" style="display: none;">
+                                                    {render_form_field form=$form field="text_free" value=$FREE_TEXT}
+                                                    <span class="help-block">{intl l='Free text will be displayed in the pop-in.' d='popin.bo.default'}</span>
+                                                </div>
+                                                <div class="col-md-6 form-group content-source-id-field content-source-id-field-free-content" style="display: none;">
+                                                    {render_form_field form=$form field="link" value=$LINK}
+                                                    <span class="help-block">{intl l='Link will be displayed in the pop-in.' d='popin.bo.default'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 {/form}
                             </td>
@@ -199,7 +212,7 @@
 
                                 loop_ref       = "pop-in-campaign-list"
                                 max_page_count = 20
-                                page_url       = "{url path="/admin/module/PopIn" order=$order target='pop_in_campaign-table'}"
+                                page_url       = {url path="/admin/module/PopIn" order=$order target='pop_in_campaign-table'}
                                 }
                             </td>
                         </tr>
@@ -222,17 +235,20 @@
     <script type="text/javascript">
         (function ($) {
             $('.datetime-picker').datetimepicker({
-                lang: '{lang attr="code"}',
+                locale: '{lang attr="code"}',
                 showClear: true,
                 sideBySide: true,
-                useSeconds: true
             });
 
             function displayContentSourceField($form) {
+
+                parentForm = '#'+($form.attr('id'));
+
                 var $contentSourceType = $form
                         .find('.content-source-type-form-group')
                         .find('select')
                         .val();
+
                 if ($contentSourceType == '') {
                     $contentSourceType = 'default';
                 }
@@ -241,10 +257,11 @@
 
                 // hide and disable the fields for all content types
                 $contentSourceIdFormGroup
-                        .find('.content-source-id-field')
-                        .hide()
-                        .find('.form-control')
-                        .prop('disabled', true);
+                    .find('.content-source-id-field')
+                    .hide()
+                    .find('.form-control')
+                    .prop('disabled', true);
+
                 // show and enable the field for the selected content type
                 $contentSourceIdFormGroup
                         .find('.content-source-id-field-' + $contentSourceType)
@@ -257,11 +274,11 @@
                 var $form = $(this);
                 displayContentSourceField($form);
                 $(this)
-                        .find('.content-source-type-form-group')
-                        .find('select')
-                        .on('change', function (event) {
-                            displayContentSourceField($(this).parents('form'), true);
-                        });
+                    .find('.content-source-type-form-group')
+                    .find('select')
+                    .on('change', function (event) {
+                        displayContentSourceField($(this).parents('form'), true);
+                    });
             });
         })(jQuery);
     </script>

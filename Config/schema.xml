@@ -11,5 +11,16 @@
         <column name="content_source_id" type="VARCHAR" />
     </table>
 
+    <table name="pop_in_free_content" namespace="PopIn\Model">
+        <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
+        <column name="id_pop_in_campaign" type="INTEGER" required="true" />
+        <column name="text_free" type="VARCHAR" />
+        <column name="link" type="VARCHAR" />
+
+        <foreign-key foreignTable="pop_in_campaign" name="fk_id_pop_in_campaign" onDelete="RESTRICT" onUpdate="RESTRICT">
+            <reference foreign="id" local="id_pop_in_campaign" />
+        </foreign-key>
+    </table>
+
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

@@ -1,0 +1,10 @@
+{* render pop-in content from a Thelia content *}
+
+<article>
+    {loop name="pop-in-campaign-list" type="pop-in-campaign" id=$campaign}
+        <div>
+            {$FREE_TEXT}
+            <a href="{$LINK}">{$LINK}</a>
+        </div>
+    {/loop}
+</article>

@@ -90,7 +90,6 @@ class FrontHook extends BaseHook
      */
     public function onMainJavascriptInitialization(HookRenderEvent $event)
     {
-        $event->add($this->addJS('assets/js/pop-in.js'));
     }
 
     /**
@@ -99,6 +98,5 @@ class FrontHook extends BaseHook
      */
     public function onMainStylesheet(HookRenderEvent $event)
     {
-        $event->add($this->addCSS('assets/less/pop-in.less', [], 'less'));
     }
 }

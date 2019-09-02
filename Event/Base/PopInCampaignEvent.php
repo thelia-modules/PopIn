@@ -22,6 +22,8 @@ class PopInCampaignEvent extends ActionEvent
     protected $contentSourceType;
     protected $contentSourceId;
     protected $popInCampaign;
+    protected $textFree;
+    protected $link;
 
     public function getId()
     {
@@ -94,4 +96,37 @@ class PopInCampaignEvent extends ActionEvent
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTextFree()
+    {
+        return $this->textFree;
+    }
+
+    /**
+     * @param mixed $textFree
+     */
+    public function setTextFree($textFree)
+    {
+        $this->textFree = $textFree;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param mixed $link
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
+
 }

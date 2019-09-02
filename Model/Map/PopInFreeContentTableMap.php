@@ -2,8 +2,8 @@
 
 namespace PopIn\Model\Map;
 
-use PopIn\Model\PopInCampaign;
-use PopIn\Model\PopInCampaignQuery;
+use PopIn\Model\PopInFreeContent;
+use PopIn\Model\PopInFreeContentQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'pop_in_campaign' table.
+ * This class defines the structure of the 'pop_in_free_content' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class PopInCampaignTableMap extends TableMap
+class PopInFreeContentTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'PopIn.Model.Map.PopInCampaignTableMap';
+    const CLASS_NAME = 'PopIn.Model.Map.PopInFreeContentTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class PopInCampaignTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'pop_in_campaign';
+    const TABLE_NAME = 'pop_in_free_content';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\PopIn\\Model\\PopInCampaign';
+    const OM_CLASS = '\\PopIn\\Model\\PopInFreeContent';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'PopIn.Model.PopInCampaign';
+    const CLASS_DEFAULT = 'PopIn.Model.PopInFreeContent';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -68,32 +68,27 @@ class PopInCampaignTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'pop_in_campaign.ID';
+    const ID = 'pop_in_free_content.ID';
 
     /**
-     * the column name for the START field
+     * the column name for the ID_POP_IN_CAMPAIGN field
      */
-    const START = 'pop_in_campaign.START';
+    const ID_POP_IN_CAMPAIGN = 'pop_in_free_content.ID_POP_IN_CAMPAIGN';
 
     /**
-     * the column name for the END field
+     * the column name for the TEXT_FREE field
      */
-    const END = 'pop_in_campaign.END';
+    const TEXT_FREE = 'pop_in_free_content.TEXT_FREE';
 
     /**
-     * the column name for the CONTENT_SOURCE_TYPE field
+     * the column name for the LINK field
      */
-    const CONTENT_SOURCE_TYPE = 'pop_in_campaign.CONTENT_SOURCE_TYPE';
-
-    /**
-     * the column name for the CONTENT_SOURCE_ID field
-     */
-    const CONTENT_SOURCE_ID = 'pop_in_campaign.CONTENT_SOURCE_ID';
+    const LINK = 'pop_in_free_content.LINK';
 
     /**
      * The default string format for model objects of the related table
@@ -107,12 +102,12 @@ class PopInCampaignTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Start', 'End', 'ContentSourceType', 'ContentSourceId', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'start', 'end', 'contentSourceType', 'contentSourceId', ),
-        self::TYPE_COLNAME       => array(PopInCampaignTableMap::ID, PopInCampaignTableMap::START, PopInCampaignTableMap::END, PopInCampaignTableMap::CONTENT_SOURCE_TYPE, PopInCampaignTableMap::CONTENT_SOURCE_ID, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'START', 'END', 'CONTENT_SOURCE_TYPE', 'CONTENT_SOURCE_ID', ),
-        self::TYPE_FIELDNAME     => array('id', 'start', 'end', 'content_source_type', 'content_source_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'IdPopInCampaign', 'TextFree', 'Link', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'idPopInCampaign', 'textFree', 'link', ),
+        self::TYPE_COLNAME       => array(PopInFreeContentTableMap::ID, PopInFreeContentTableMap::ID_POP_IN_CAMPAIGN, PopInFreeContentTableMap::TEXT_FREE, PopInFreeContentTableMap::LINK, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'ID_POP_IN_CAMPAIGN', 'TEXT_FREE', 'LINK', ),
+        self::TYPE_FIELDNAME     => array('id', 'id_pop_in_campaign', 'text_free', 'link', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -122,12 +117,12 @@ class PopInCampaignTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Start' => 1, 'End' => 2, 'ContentSourceType' => 3, 'ContentSourceId' => 4, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'start' => 1, 'end' => 2, 'contentSourceType' => 3, 'contentSourceId' => 4, ),
-        self::TYPE_COLNAME       => array(PopInCampaignTableMap::ID => 0, PopInCampaignTableMap::START => 1, PopInCampaignTableMap::END => 2, PopInCampaignTableMap::CONTENT_SOURCE_TYPE => 3, PopInCampaignTableMap::CONTENT_SOURCE_ID => 4, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'START' => 1, 'END' => 2, 'CONTENT_SOURCE_TYPE' => 3, 'CONTENT_SOURCE_ID' => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'start' => 1, 'end' => 2, 'content_source_type' => 3, 'content_source_id' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'IdPopInCampaign' => 1, 'TextFree' => 2, 'Link' => 3, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'idPopInCampaign' => 1, 'textFree' => 2, 'link' => 3, ),
+        self::TYPE_COLNAME       => array(PopInFreeContentTableMap::ID => 0, PopInFreeContentTableMap::ID_POP_IN_CAMPAIGN => 1, PopInFreeContentTableMap::TEXT_FREE => 2, PopInFreeContentTableMap::LINK => 3, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ID_POP_IN_CAMPAIGN' => 1, 'TEXT_FREE' => 2, 'LINK' => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'id_pop_in_campaign' => 1, 'text_free' => 2, 'link' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -140,17 +135,16 @@ class PopInCampaignTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('pop_in_campaign');
-        $this->setPhpName('PopInCampaign');
-        $this->setClassName('\\PopIn\\Model\\PopInCampaign');
+        $this->setName('pop_in_free_content');
+        $this->setPhpName('PopInFreeContent');
+        $this->setClassName('\\PopIn\\Model\\PopInFreeContent');
         $this->setPackage('PopIn.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('START', 'Start', 'TIMESTAMP', false, null, null);
-        $this->addColumn('END', 'End', 'TIMESTAMP', false, null, null);
-        $this->addColumn('CONTENT_SOURCE_TYPE', 'ContentSourceType', 'VARCHAR', false, 255, null);
-        $this->addColumn('CONTENT_SOURCE_ID', 'ContentSourceId', 'VARCHAR', false, 255, null);
+        $this->addForeignKey('ID_POP_IN_CAMPAIGN', 'IdPopInCampaign', 'INTEGER', 'pop_in_campaign', 'ID', true, null, null);
+        $this->addColumn('TEXT_FREE', 'TextFree', 'VARCHAR', false, 255, null);
+        $this->addColumn('LINK', 'Link', 'VARCHAR', false, 255, null);
     } // initialize()
 
     /**
@@ -158,7 +152,7 @@ class PopInCampaignTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PopInFreeContent', '\\PopIn\\Model\\PopInFreeContent', RelationMap::ONE_TO_MANY, array('id' => 'id_pop_in_campaign', ), 'RESTRICT', 'RESTRICT', 'PopInFreeContents');
+        $this->addRelation('PopInCampaign', '\\PopIn\\Model\\PopInCampaign', RelationMap::MANY_TO_ONE, array('id_pop_in_campaign' => 'id', ), 'RESTRICT', 'RESTRICT');
     } // buildRelations()
 
     /**
@@ -217,7 +211,7 @@ class PopInCampaignTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? PopInCampaignTableMap::CLASS_DEFAULT : PopInCampaignTableMap::OM_CLASS;
+        return $withPrefix ? PopInFreeContentTableMap::CLASS_DEFAULT : PopInFreeContentTableMap::OM_CLASS;
     }
 
     /**
@@ -231,21 +225,21 @@ class PopInCampaignTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (PopInCampaign object, last column rank)
+     * @return array (PopInFreeContent object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = PopInCampaignTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = PopInCampaignTableMap::getInstanceFromPool($key))) {
+        $key = PopInFreeContentTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = PopInFreeContentTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + PopInCampaignTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + PopInFreeContentTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PopInCampaignTableMap::OM_CLASS;
+            $cls = PopInFreeContentTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            PopInCampaignTableMap::addInstanceToPool($obj, $key);
+            PopInFreeContentTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -268,8 +262,8 @@ class PopInCampaignTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = PopInCampaignTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = PopInCampaignTableMap::getInstanceFromPool($key))) {
+            $key = PopInFreeContentTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = PopInFreeContentTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -278,7 +272,7 @@ class PopInCampaignTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PopInCampaignTableMap::addInstanceToPool($obj, $key);
+                PopInFreeContentTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -299,17 +293,15 @@ class PopInCampaignTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PopInCampaignTableMap::ID);
-            $criteria->addSelectColumn(PopInCampaignTableMap::START);
-            $criteria->addSelectColumn(PopInCampaignTableMap::END);
-            $criteria->addSelectColumn(PopInCampaignTableMap::CONTENT_SOURCE_TYPE);
-            $criteria->addSelectColumn(PopInCampaignTableMap::CONTENT_SOURCE_ID);
+            $criteria->addSelectColumn(PopInFreeContentTableMap::ID);
+            $criteria->addSelectColumn(PopInFreeContentTableMap::ID_POP_IN_CAMPAIGN);
+            $criteria->addSelectColumn(PopInFreeContentTableMap::TEXT_FREE);
+            $criteria->addSelectColumn(PopInFreeContentTableMap::LINK);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.START');
-            $criteria->addSelectColumn($alias . '.END');
-            $criteria->addSelectColumn($alias . '.CONTENT_SOURCE_TYPE');
-            $criteria->addSelectColumn($alias . '.CONTENT_SOURCE_ID');
+            $criteria->addSelectColumn($alias . '.ID_POP_IN_CAMPAIGN');
+            $criteria->addSelectColumn($alias . '.TEXT_FREE');
+            $criteria->addSelectColumn($alias . '.LINK');
         }
     }
 
@@ -322,7 +314,7 @@ class PopInCampaignTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(PopInCampaignTableMap::DATABASE_NAME)->getTable(PopInCampaignTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(PopInFreeContentTableMap::DATABASE_NAME)->getTable(PopInFreeContentTableMap::TABLE_NAME);
     }
 
     /**
@@ -330,16 +322,16 @@ class PopInCampaignTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(PopInCampaignTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(PopInCampaignTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new PopInCampaignTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(PopInFreeContentTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(PopInFreeContentTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new PopInFreeContentTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a PopInCampaign or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PopInFreeContent or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or PopInCampaign object or primary key or array of primary keys
+     * @param mixed               $values Criteria or PopInFreeContent object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -350,25 +342,25 @@ class PopInCampaignTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PopInCampaignTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PopInFreeContentTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \PopIn\Model\PopInCampaign) { // it's a model object
+        } elseif ($values instanceof \PopIn\Model\PopInFreeContent) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PopInCampaignTableMap::DATABASE_NAME);
-            $criteria->add(PopInCampaignTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PopInFreeContentTableMap::DATABASE_NAME);
+            $criteria->add(PopInFreeContentTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = PopInCampaignQuery::create()->mergeWith($criteria);
+        $query = PopInFreeContentQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { PopInCampaignTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { PopInFreeContentTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { PopInCampaignTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { PopInFreeContentTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -376,20 +368,20 @@ class PopInCampaignTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the pop_in_campaign table.
+     * Deletes all rows from the pop_in_free_content table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return PopInCampaignQuery::create()->doDeleteAll($con);
+        return PopInFreeContentQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a PopInCampaign or Criteria object.
+     * Performs an INSERT on the database, given a PopInFreeContent or Criteria object.
      *
-     * @param mixed               $criteria Criteria or PopInCampaign object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or PopInFreeContent object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -398,22 +390,22 @@ class PopInCampaignTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PopInCampaignTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PopInFreeContentTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from PopInCampaign object
+            $criteria = $criteria->buildCriteria(); // build Criteria from PopInFreeContent object
         }
 
-        if ($criteria->containsKey(PopInCampaignTableMap::ID) && $criteria->keyContainsValue(PopInCampaignTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PopInCampaignTableMap::ID.')');
+        if ($criteria->containsKey(PopInFreeContentTableMap::ID) && $criteria->keyContainsValue(PopInFreeContentTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PopInFreeContentTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = PopInCampaignQuery::create()->mergeWith($criteria);
+        $query = PopInFreeContentQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -429,7 +421,7 @@ class PopInCampaignTableMap extends TableMap
         return $pk;
     }
 
-} // PopInCampaignTableMap
+} // PopInFreeContentTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-PopInCampaignTableMap::buildTableMap();
+PopInFreeContentTableMap::buildTableMap();

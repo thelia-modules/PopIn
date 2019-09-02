@@ -25,7 +25,7 @@ Here you can add, edit or remove campaigns.
 
 A pop-in campaign can run for a specific period.
 If a start date is selected, the pop-in will only be displayed after this date.
-If an end date is selected, the pop-in will not be displaye after this date.
+If an end date is selected, the pop-in will not be display after this date.
 You can plan multiple campaigns at once.
 
 The pop-in content can come from different sources:

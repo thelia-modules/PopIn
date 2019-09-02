@@ -19,5 +19,26 @@ CREATE TABLE `pop_in_campaign`
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
+-- pop_in_free_content
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pop_in_free_content`;
+
+CREATE TABLE `pop_in_free_content`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id_pop_in_campaign` INTEGER NOT NULL,
+    `text_free` VARCHAR(255),
+    `link` VARCHAR(255),
+    PRIMARY KEY (`id`),
+    INDEX `FI_id_pop_in_campaign` (`id_pop_in_campaign`),
+    CONSTRAINT `fk_id_pop_in_campaign`
+        FOREIGN KEY (`id_pop_in_campaign`)
+        REFERENCES `pop_in_campaign` (`id`)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

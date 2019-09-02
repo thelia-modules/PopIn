@@ -2,33 +2,29 @@
 
 namespace PopIn\Model\Base;
 
-use \DateTime;
 use \Exception;
 use \PDO;
 use PopIn\Model\PopInCampaign as ChildPopInCampaign;
 use PopIn\Model\PopInCampaignQuery as ChildPopInCampaignQuery;
-use PopIn\Model\PopInFreeContent as ChildPopInFreeContent;
 use PopIn\Model\PopInFreeContentQuery as ChildPopInFreeContentQuery;
-use PopIn\Model\Map\PopInCampaignTableMap;
+use PopIn\Model\Map\PopInFreeContentTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 
-abstract class PopInCampaign implements ActiveRecordInterface
+abstract class PopInFreeContent implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\PopIn\\Model\\Map\\PopInCampaignTableMap';
+    const TABLE_MAP = '\\PopIn\\Model\\Map\\PopInFreeContentTableMap';
 
 
     /**
@@ -64,34 +60,27 @@ abstract class PopInCampaign implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the start field.
-     * @var        string
+     * The value for the id_pop_in_campaign field.
+     * @var        int
      */
-    protected $start;
+    protected $id_pop_in_campaign;
 
     /**
-     * The value for the end field.
+     * The value for the text_free field.
      * @var        string
      */
-    protected $end;
+    protected $text_free;
 
     /**
-     * The value for the content_source_type field.
+     * The value for the link field.
      * @var        string
      */
-    protected $content_source_type;
+    protected $link;
 
     /**
-     * The value for the content_source_id field.
-     * @var        string
+     * @var        PopInCampaign
      */
-    protected $content_source_id;
-
-    /**
-     * @var        ObjectCollection|ChildPopInFreeContent[] Collection to store aggregation of ChildPopInFreeContent objects.
-     */
-    protected $collPopInFreeContents;
-    protected $collPopInFreeContentsPartial;
+    protected $aPopInCampaign;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -102,13 +91,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection
-     */
-    protected $popInFreeContentsScheduledForDeletion = null;
-
-    /**
-     * Initializes internal state of PopIn\Model\Base\PopInCampaign object.
+     * Initializes internal state of PopIn\Model\Base\PopInFreeContent object.
      */
     public function __construct()
     {
@@ -203,9 +186,9 @@ abstract class PopInCampaign implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>PopInCampaign</code> instance.  If
-     * <code>obj</code> is an instance of <code>PopInCampaign</code>, delegates to
-     * <code>equals(PopInCampaign)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>PopInFreeContent</code> instance.  If
+     * <code>obj</code> is an instance of <code>PopInFreeContent</code>, delegates to
+     * <code>equals(PopInFreeContent)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -288,7 +271,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return PopInCampaign The current object, for fluid interface
+     * @return PopInFreeContent The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -320,7 +303,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return PopInCampaign The current object, for fluid interface
+     * @return PopInFreeContent The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -377,72 +360,43 @@ abstract class PopInCampaign implements ActiveRecordInterface
     }
 
     /**
-     * Get the [optionally formatted] temporal [start] column value.
+     * Get the [id_pop_in_campaign] column value.
      *
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
+     * @return   int
      */
-    public function getStart($format = NULL)
+    public function getIdPopInCampaign()
     {
-        if ($format === null) {
-            return $this->start;
-        } else {
-            return $this->start instanceof \DateTime ? $this->start->format($format) : null;
-        }
+
+        return $this->id_pop_in_campaign;
     }
 
     /**
-     * Get the [optionally formatted] temporal [end] column value.
-     *
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getEnd($format = NULL)
-    {
-        if ($format === null) {
-            return $this->end;
-        } else {
-            return $this->end instanceof \DateTime ? $this->end->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [content_source_type] column value.
+     * Get the [text_free] column value.
      *
      * @return   string
      */
-    public function getContentSourceType()
+    public function getTextFree()
     {
 
-        return $this->content_source_type;
+        return $this->text_free;
     }
 
     /**
-     * Get the [content_source_id] column value.
+     * Get the [link] column value.
      *
      * @return   string
      */
-    public function getContentSourceId()
+    public function getLink()
     {
 
-        return $this->content_source_id;
+        return $this->link;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param      int $v new value
-     * @return   \PopIn\Model\PopInCampaign The current object (for fluent API support)
+     * @return   \PopIn\Model\PopInFreeContent The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -452,7 +406,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[PopInCampaignTableMap::ID] = true;
+            $this->modifiedColumns[PopInFreeContentTableMap::ID] = true;
         }
 
 
@@ -460,88 +414,71 @@ abstract class PopInCampaign implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Sets the value of [start] column to a normalized version of the date/time value specified.
+     * Set the value of [id_pop_in_campaign] column.
      *
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \PopIn\Model\PopInCampaign The current object (for fluent API support)
+     * @param      int $v new value
+     * @return   \PopIn\Model\PopInFreeContent The current object (for fluent API support)
      */
-    public function setStart($v)
+    public function setIdPopInCampaign($v)
     {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->start !== null || $dt !== null) {
-            if ($dt !== $this->start) {
-                $this->start = $dt;
-                $this->modifiedColumns[PopInCampaignTableMap::START] = true;
-            }
-        } // if either are not null
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_pop_in_campaign !== $v) {
+            $this->id_pop_in_campaign = $v;
+            $this->modifiedColumns[PopInFreeContentTableMap::ID_POP_IN_CAMPAIGN] = true;
+        }
+
+        if ($this->aPopInCampaign !== null && $this->aPopInCampaign->getId() !== $v) {
+            $this->aPopInCampaign = null;
+        }
 
 
         return $this;
-    } // setStart()
+    } // setIdPopInCampaign()
 
     /**
-     * Sets the value of [end] column to a normalized version of the date/time value specified.
-     *
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \PopIn\Model\PopInCampaign The current object (for fluent API support)
-     */
-    public function setEnd($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->end !== null || $dt !== null) {
-            if ($dt !== $this->end) {
-                $this->end = $dt;
-                $this->modifiedColumns[PopInCampaignTableMap::END] = true;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setEnd()
-
-    /**
-     * Set the value of [content_source_type] column.
+     * Set the value of [text_free] column.
      *
      * @param      string $v new value
-     * @return   \PopIn\Model\PopInCampaign The current object (for fluent API support)
+     * @return   \PopIn\Model\PopInFreeContent The current object (for fluent API support)
      */
-    public function setContentSourceType($v)
+    public function setTextFree($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->content_source_type !== $v) {
-            $this->content_source_type = $v;
-            $this->modifiedColumns[PopInCampaignTableMap::CONTENT_SOURCE_TYPE] = true;
+        if ($this->text_free !== $v) {
+            $this->text_free = $v;
+            $this->modifiedColumns[PopInFreeContentTableMap::TEXT_FREE] = true;
         }
 
 
         return $this;
-    } // setContentSourceType()
+    } // setTextFree()
 
     /**
-     * Set the value of [content_source_id] column.
+     * Set the value of [link] column.
      *
      * @param      string $v new value
-     * @return   \PopIn\Model\PopInCampaign The current object (for fluent API support)
+     * @return   \PopIn\Model\PopInFreeContent The current object (for fluent API support)
      */
-    public function setContentSourceId($v)
+    public function setLink($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->content_source_id !== $v) {
-            $this->content_source_id = $v;
-            $this->modifiedColumns[PopInCampaignTableMap::CONTENT_SOURCE_ID] = true;
+        if ($this->link !== $v) {
+            $this->link = $v;
+            $this->modifiedColumns[PopInFreeContentTableMap::LINK] = true;
         }
 
 
         return $this;
-    } // setContentSourceId()
+    } // setLink()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -580,26 +517,17 @@ abstract class PopInCampaign implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PopInCampaignTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PopInFreeContentTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PopInCampaignTableMap::translateFieldName('Start', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->start = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PopInFreeContentTableMap::translateFieldName('IdPopInCampaign', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id_pop_in_campaign = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PopInCampaignTableMap::translateFieldName('End', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->end = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PopInFreeContentTableMap::translateFieldName('TextFree', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->text_free = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PopInCampaignTableMap::translateFieldName('ContentSourceType', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->content_source_type = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PopInCampaignTableMap::translateFieldName('ContentSourceId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->content_source_id = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PopInFreeContentTableMap::translateFieldName('Link', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->link = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -608,10 +536,10 @@ abstract class PopInCampaign implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = PopInCampaignTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = PopInFreeContentTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \PopIn\Model\PopInCampaign object", 0, $e);
+            throw new PropelException("Error populating \PopIn\Model\PopInFreeContent object", 0, $e);
         }
     }
 
@@ -630,6 +558,9 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aPopInCampaign !== null && $this->id_pop_in_campaign !== $this->aPopInCampaign->getId()) {
+            $this->aPopInCampaign = null;
+        }
     } // ensureConsistency
 
     /**
@@ -653,13 +584,13 @@ abstract class PopInCampaign implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(PopInCampaignTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(PopInFreeContentTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildPopInCampaignQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildPopInFreeContentQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -669,8 +600,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collPopInFreeContents = null;
-
+            $this->aPopInCampaign = null;
         } // if (deep)
     }
 
@@ -680,8 +610,8 @@ abstract class PopInCampaign implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see PopInCampaign::setDeleted()
-     * @see PopInCampaign::isDeleted()
+     * @see PopInFreeContent::setDeleted()
+     * @see PopInFreeContent::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -690,12 +620,12 @@ abstract class PopInCampaign implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PopInCampaignTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PopInFreeContentTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildPopInCampaignQuery::create()
+            $deleteQuery = ChildPopInFreeContentQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -732,7 +662,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PopInCampaignTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PopInFreeContentTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -752,7 +682,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                PopInCampaignTableMap::addInstanceToPool($this);
+                PopInFreeContentTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -782,6 +712,18 @@ abstract class PopInCampaign implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aPopInCampaign !== null) {
+                if ($this->aPopInCampaign->isModified() || $this->aPopInCampaign->isNew()) {
+                    $affectedRows += $this->aPopInCampaign->save($con);
+                }
+                $this->setPopInCampaign($this->aPopInCampaign);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -791,23 +733,6 @@ abstract class PopInCampaign implements ActiveRecordInterface
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->popInFreeContentsScheduledForDeletion !== null) {
-                if (!$this->popInFreeContentsScheduledForDeletion->isEmpty()) {
-                    \PopIn\Model\PopInFreeContentQuery::create()
-                        ->filterByPrimaryKeys($this->popInFreeContentsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->popInFreeContentsScheduledForDeletion = null;
-                }
-            }
-
-                if ($this->collPopInFreeContents !== null) {
-            foreach ($this->collPopInFreeContents as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -830,30 +755,27 @@ abstract class PopInCampaign implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[PopInCampaignTableMap::ID] = true;
+        $this->modifiedColumns[PopInFreeContentTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PopInCampaignTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PopInFreeContentTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PopInCampaignTableMap::ID)) {
+        if ($this->isColumnModified(PopInFreeContentTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(PopInCampaignTableMap::START)) {
-            $modifiedColumns[':p' . $index++]  = 'START';
+        if ($this->isColumnModified(PopInFreeContentTableMap::ID_POP_IN_CAMPAIGN)) {
+            $modifiedColumns[':p' . $index++]  = 'ID_POP_IN_CAMPAIGN';
         }
-        if ($this->isColumnModified(PopInCampaignTableMap::END)) {
-            $modifiedColumns[':p' . $index++]  = 'END';
+        if ($this->isColumnModified(PopInFreeContentTableMap::TEXT_FREE)) {
+            $modifiedColumns[':p' . $index++]  = 'TEXT_FREE';
         }
-        if ($this->isColumnModified(PopInCampaignTableMap::CONTENT_SOURCE_TYPE)) {
-            $modifiedColumns[':p' . $index++]  = 'CONTENT_SOURCE_TYPE';
-        }
-        if ($this->isColumnModified(PopInCampaignTableMap::CONTENT_SOURCE_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'CONTENT_SOURCE_ID';
+        if ($this->isColumnModified(PopInFreeContentTableMap::LINK)) {
+            $modifiedColumns[':p' . $index++]  = 'LINK';
         }
 
         $sql = sprintf(
-            'INSERT INTO pop_in_campaign (%s) VALUES (%s)',
+            'INSERT INTO pop_in_free_content (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -865,17 +787,14 @@ abstract class PopInCampaign implements ActiveRecordInterface
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'START':
-                        $stmt->bindValue($identifier, $this->start ? $this->start->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                    case 'ID_POP_IN_CAMPAIGN':
+                        $stmt->bindValue($identifier, $this->id_pop_in_campaign, PDO::PARAM_INT);
                         break;
-                    case 'END':
-                        $stmt->bindValue($identifier, $this->end ? $this->end->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                    case 'TEXT_FREE':
+                        $stmt->bindValue($identifier, $this->text_free, PDO::PARAM_STR);
                         break;
-                    case 'CONTENT_SOURCE_TYPE':
-                        $stmt->bindValue($identifier, $this->content_source_type, PDO::PARAM_STR);
-                        break;
-                    case 'CONTENT_SOURCE_ID':
-                        $stmt->bindValue($identifier, $this->content_source_id, PDO::PARAM_STR);
+                    case 'LINK':
+                        $stmt->bindValue($identifier, $this->link, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -923,7 +842,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = PopInCampaignTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = PopInFreeContentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -943,16 +862,13 @@ abstract class PopInCampaign implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getStart();
+                return $this->getIdPopInCampaign();
                 break;
             case 2:
-                return $this->getEnd();
+                return $this->getTextFree();
                 break;
             case 3:
-                return $this->getContentSourceType();
-                break;
-            case 4:
-                return $this->getContentSourceId();
+                return $this->getLink();
                 break;
             default:
                 return null;
@@ -977,17 +893,16 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['PopInCampaign'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['PopInFreeContent'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['PopInCampaign'][$this->getPrimaryKey()] = true;
-        $keys = PopInCampaignTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['PopInFreeContent'][$this->getPrimaryKey()] = true;
+        $keys = PopInFreeContentTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getStart(),
-            $keys[2] => $this->getEnd(),
-            $keys[3] => $this->getContentSourceType(),
-            $keys[4] => $this->getContentSourceId(),
+            $keys[1] => $this->getIdPopInCampaign(),
+            $keys[2] => $this->getTextFree(),
+            $keys[3] => $this->getLink(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -995,8 +910,8 @@ abstract class PopInCampaign implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collPopInFreeContents) {
-                $result['PopInFreeContents'] = $this->collPopInFreeContents->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aPopInCampaign) {
+                $result['PopInCampaign'] = $this->aPopInCampaign->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1016,7 +931,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = PopInCampaignTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = PopInFreeContentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1036,16 +951,13 @@ abstract class PopInCampaign implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setStart($value);
+                $this->setIdPopInCampaign($value);
                 break;
             case 2:
-                $this->setEnd($value);
+                $this->setTextFree($value);
                 break;
             case 3:
-                $this->setContentSourceType($value);
-                break;
-            case 4:
-                $this->setContentSourceId($value);
+                $this->setLink($value);
                 break;
         } // switch()
     }
@@ -1069,13 +981,12 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = PopInCampaignTableMap::getFieldNames($keyType);
+        $keys = PopInFreeContentTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setStart($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setEnd($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setContentSourceType($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setContentSourceId($arr[$keys[4]]);
+        if (array_key_exists($keys[1], $arr)) $this->setIdPopInCampaign($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTextFree($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setLink($arr[$keys[3]]);
     }
 
     /**
@@ -1085,13 +996,12 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(PopInCampaignTableMap::DATABASE_NAME);
+        $criteria = new Criteria(PopInFreeContentTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(PopInCampaignTableMap::ID)) $criteria->add(PopInCampaignTableMap::ID, $this->id);
-        if ($this->isColumnModified(PopInCampaignTableMap::START)) $criteria->add(PopInCampaignTableMap::START, $this->start);
-        if ($this->isColumnModified(PopInCampaignTableMap::END)) $criteria->add(PopInCampaignTableMap::END, $this->end);
-        if ($this->isColumnModified(PopInCampaignTableMap::CONTENT_SOURCE_TYPE)) $criteria->add(PopInCampaignTableMap::CONTENT_SOURCE_TYPE, $this->content_source_type);
-        if ($this->isColumnModified(PopInCampaignTableMap::CONTENT_SOURCE_ID)) $criteria->add(PopInCampaignTableMap::CONTENT_SOURCE_ID, $this->content_source_id);
+        if ($this->isColumnModified(PopInFreeContentTableMap::ID)) $criteria->add(PopInFreeContentTableMap::ID, $this->id);
+        if ($this->isColumnModified(PopInFreeContentTableMap::ID_POP_IN_CAMPAIGN)) $criteria->add(PopInFreeContentTableMap::ID_POP_IN_CAMPAIGN, $this->id_pop_in_campaign);
+        if ($this->isColumnModified(PopInFreeContentTableMap::TEXT_FREE)) $criteria->add(PopInFreeContentTableMap::TEXT_FREE, $this->text_free);
+        if ($this->isColumnModified(PopInFreeContentTableMap::LINK)) $criteria->add(PopInFreeContentTableMap::LINK, $this->link);
 
         return $criteria;
     }
@@ -1106,8 +1016,8 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(PopInCampaignTableMap::DATABASE_NAME);
-        $criteria->add(PopInCampaignTableMap::ID, $this->id);
+        $criteria = new Criteria(PopInFreeContentTableMap::DATABASE_NAME);
+        $criteria->add(PopInFreeContentTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1148,31 +1058,16 @@ abstract class PopInCampaign implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \PopIn\Model\PopInCampaign (or compatible) type.
+     * @param      object $copyObj An object of \PopIn\Model\PopInFreeContent (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setStart($this->getStart());
-        $copyObj->setEnd($this->getEnd());
-        $copyObj->setContentSourceType($this->getContentSourceType());
-        $copyObj->setContentSourceId($this->getContentSourceId());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getPopInFreeContents() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPopInFreeContent($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
+        $copyObj->setIdPopInCampaign($this->getIdPopInCampaign());
+        $copyObj->setTextFree($this->getTextFree());
+        $copyObj->setLink($this->getLink());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1188,7 +1083,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \PopIn\Model\PopInCampaign Clone of current object.
+     * @return                 \PopIn\Model\PopInFreeContent Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1201,238 +1096,55 @@ abstract class PopInCampaign implements ActiveRecordInterface
         return $copyObj;
     }
 
-
     /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
+     * Declares an association between this object and a ChildPopInCampaign object.
      *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('PopInFreeContent' == $relationName) {
-            return $this->initPopInFreeContents();
-        }
-    }
-
-    /**
-     * Clears out the collPopInFreeContents collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addPopInFreeContents()
-     */
-    public function clearPopInFreeContents()
-    {
-        $this->collPopInFreeContents = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collPopInFreeContents collection loaded partially.
-     */
-    public function resetPartialPopInFreeContents($v = true)
-    {
-        $this->collPopInFreeContentsPartial = $v;
-    }
-
-    /**
-     * Initializes the collPopInFreeContents collection.
-     *
-     * By default this just sets the collPopInFreeContents collection to an empty array (like clearcollPopInFreeContents());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPopInFreeContents($overrideExisting = true)
-    {
-        if (null !== $this->collPopInFreeContents && !$overrideExisting) {
-            return;
-        }
-        $this->collPopInFreeContents = new ObjectCollection();
-        $this->collPopInFreeContents->setModel('\PopIn\Model\PopInFreeContent');
-    }
-
-    /**
-     * Gets an array of ChildPopInFreeContent objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildPopInCampaign is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return Collection|ChildPopInFreeContent[] List of ChildPopInFreeContent objects
+     * @param                  ChildPopInCampaign $v
+     * @return                 \PopIn\Model\PopInFreeContent The current object (for fluent API support)
      * @throws PropelException
      */
-    public function getPopInFreeContents($criteria = null, ConnectionInterface $con = null)
+    public function setPopInCampaign(ChildPopInCampaign $v = null)
     {
-        $partial = $this->collPopInFreeContentsPartial && !$this->isNew();
-        if (null === $this->collPopInFreeContents || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPopInFreeContents) {
-                // return empty collection
-                $this->initPopInFreeContents();
-            } else {
-                $collPopInFreeContents = ChildPopInFreeContentQuery::create(null, $criteria)
-                    ->filterByPopInCampaign($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collPopInFreeContentsPartial && count($collPopInFreeContents)) {
-                        $this->initPopInFreeContents(false);
-
-                        foreach ($collPopInFreeContents as $obj) {
-                            if (false == $this->collPopInFreeContents->contains($obj)) {
-                                $this->collPopInFreeContents->append($obj);
-                            }
-                        }
-
-                        $this->collPopInFreeContentsPartial = true;
-                    }
-
-                    reset($collPopInFreeContents);
-
-                    return $collPopInFreeContents;
-                }
-
-                if ($partial && $this->collPopInFreeContents) {
-                    foreach ($this->collPopInFreeContents as $obj) {
-                        if ($obj->isNew()) {
-                            $collPopInFreeContents[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPopInFreeContents = $collPopInFreeContents;
-                $this->collPopInFreeContentsPartial = false;
-            }
+        if ($v === null) {
+            $this->setIdPopInCampaign(NULL);
+        } else {
+            $this->setIdPopInCampaign($v->getId());
         }
 
-        return $this->collPopInFreeContents;
-    }
+        $this->aPopInCampaign = $v;
 
-    /**
-     * Sets a collection of PopInFreeContent objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $popInFreeContents A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return   ChildPopInCampaign The current object (for fluent API support)
-     */
-    public function setPopInFreeContents(Collection $popInFreeContents, ConnectionInterface $con = null)
-    {
-        $popInFreeContentsToDelete = $this->getPopInFreeContents(new Criteria(), $con)->diff($popInFreeContents);
-
-
-        $this->popInFreeContentsScheduledForDeletion = $popInFreeContentsToDelete;
-
-        foreach ($popInFreeContentsToDelete as $popInFreeContentRemoved) {
-            $popInFreeContentRemoved->setPopInCampaign(null);
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildPopInCampaign object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPopInFreeContent($this);
         }
 
-        $this->collPopInFreeContents = null;
-        foreach ($popInFreeContents as $popInFreeContent) {
-            $this->addPopInFreeContent($popInFreeContent);
-        }
-
-        $this->collPopInFreeContents = $popInFreeContents;
-        $this->collPopInFreeContentsPartial = false;
 
         return $this;
     }
 
+
     /**
-     * Returns the number of related PopInFreeContent objects.
+     * Get the associated ChildPopInCampaign object
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related PopInFreeContent objects.
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildPopInCampaign The associated ChildPopInCampaign object.
      * @throws PropelException
      */
-    public function countPopInFreeContents(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function getPopInCampaign(ConnectionInterface $con = null)
     {
-        $partial = $this->collPopInFreeContentsPartial && !$this->isNew();
-        if (null === $this->collPopInFreeContents || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPopInFreeContents) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPopInFreeContents());
-            }
-
-            $query = ChildPopInFreeContentQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByPopInCampaign($this)
-                ->count($con);
+        if ($this->aPopInCampaign === null && ($this->id_pop_in_campaign !== null)) {
+            $this->aPopInCampaign = ChildPopInCampaignQuery::create()->findPk($this->id_pop_in_campaign, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aPopInCampaign->addPopInFreeContents($this);
+             */
         }
 
-        return count($this->collPopInFreeContents);
-    }
-
-    /**
-     * Method called to associate a ChildPopInFreeContent object to this object
-     * through the ChildPopInFreeContent foreign key attribute.
-     *
-     * @param    ChildPopInFreeContent $l ChildPopInFreeContent
-     * @return   \PopIn\Model\PopInCampaign The current object (for fluent API support)
-     */
-    public function addPopInFreeContent(ChildPopInFreeContent $l)
-    {
-        if ($this->collPopInFreeContents === null) {
-            $this->initPopInFreeContents();
-            $this->collPopInFreeContentsPartial = true;
-        }
-
-        if (!in_array($l, $this->collPopInFreeContents->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPopInFreeContent($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param PopInFreeContent $popInFreeContent The popInFreeContent object to add.
-     */
-    protected function doAddPopInFreeContent($popInFreeContent)
-    {
-        $this->collPopInFreeContents[]= $popInFreeContent;
-        $popInFreeContent->setPopInCampaign($this);
-    }
-
-    /**
-     * @param  PopInFreeContent $popInFreeContent The popInFreeContent object to remove.
-     * @return ChildPopInCampaign The current object (for fluent API support)
-     */
-    public function removePopInFreeContent($popInFreeContent)
-    {
-        if ($this->getPopInFreeContents()->contains($popInFreeContent)) {
-            $this->collPopInFreeContents->remove($this->collPopInFreeContents->search($popInFreeContent));
-            if (null === $this->popInFreeContentsScheduledForDeletion) {
-                $this->popInFreeContentsScheduledForDeletion = clone $this->collPopInFreeContents;
-                $this->popInFreeContentsScheduledForDeletion->clear();
-            }
-            $this->popInFreeContentsScheduledForDeletion[]= clone $popInFreeContent;
-            $popInFreeContent->setPopInCampaign(null);
-        }
-
-        return $this;
+        return $this->aPopInCampaign;
     }
 
     /**
@@ -1441,10 +1153,9 @@ abstract class PopInCampaign implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
-        $this->start = null;
-        $this->end = null;
-        $this->content_source_type = null;
-        $this->content_source_id = null;
+        $this->id_pop_in_campaign = null;
+        $this->text_free = null;
+        $this->link = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1464,14 +1175,9 @@ abstract class PopInCampaign implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collPopInFreeContents) {
-                foreach ($this->collPopInFreeContents as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collPopInFreeContents = null;
+        $this->aPopInCampaign = null;
     }
 
     /**
@@ -1481,7 +1187,7 @@ abstract class PopInCampaign implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(PopInCampaignTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PopInFreeContentTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

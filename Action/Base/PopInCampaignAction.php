@@ -11,9 +11,9 @@ use PopIn\Event\PopInCampaignEvent;
 use PopIn\Event\PopInCampaignEvents;
 use PopIn\Model\PopInCampaignQuery;
 use PopIn\Model\PopInCampaign;
+use PopIn\Model\PopInFreeContent;
+use PopIn\Model\PopInFreeContentQuery;
 use Thelia\Action\BaseAction;
-use Thelia\Core\Event\ToggleVisibilityEvent;
-use Thelia\Core\Event\UpdatePositionEvent;
 use Propel\Runtime\Propel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
@@ -26,11 +26,19 @@ use \Thelia\Core\Event\TheliaFormEvent;
  */
 class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
 {
+    /**
+     * @param PopInCampaignEvent $event
+     * @throws \Exception
+     */
     public function create(PopInCampaignEvent $event)
     {
         $this->createOrUpdate($event, new PopInCampaign());
     }
 
+    /**
+     * @param PopInCampaignEvent $event
+     * @throws \Exception
+     */
     public function update(PopInCampaignEvent $event)
     {
         $model = $this->getPopInCampaign($event);
@@ -38,11 +46,30 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
         $this->createOrUpdate($event, $model);
     }
 
+    /**
+     * @param PopInCampaignEvent $event
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
     public function delete(PopInCampaignEvent $event)
     {
+        /** @var PopInFreeContent $popinFreeContent */
+        $popinFreeContent = PopInFreeContentQuery::create()
+            ->filterByIdPopInCampaign($event->getId())
+            ->findOne();
+
+        if(null !== $popinFreeContent){
+            $popinFreeContent
+                ->delete();
+        }
+
         $this->getPopInCampaign($event)->delete();
     }
 
+    /**
+     * @param PopInCampaignEvent $event
+     * @param PopInCampaign $model
+     * @throws \Exception
+     */
     protected function createOrUpdate(PopInCampaignEvent $event, PopInCampaign $model)
     {
         $con = Propel::getConnection(PopInCampaignTableMap::DATABASE_NAME);
@@ -72,6 +99,23 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
             $model->save($con);
 
             $con->commit();
+
+
+            if('free-content' == $contentSourceType){
+                if ((null !== $textFree = $event->getTextFree()) && (null !== $link = $event->getLink())) {
+
+                    /** @var PopInFreeContent $popinFreeContent */
+                    $popinFreeContent = PopInFreeContentQuery::create()
+                        ->filterByIdPopInCampaign($model->getId())
+                        ->findOneOrCreate();
+
+                    $popinFreeContent
+                        ->setTextFree($textFree)
+                        ->setLink($link)
+                        ->save();
+                }
+            }
+
         } catch (\Exception $e) {
             $con->rollback();
 

@@ -11,6 +11,8 @@
                 {include file=$campaign.content_source_id}
             {elseif $campaign.content_source_type == 'hook'}
                 {hook name='pop-in.content' campaign=$campaign.id}
+            {elseif $campaign.content_source_type == 'free-content'}
+                {include file='pop-in-free-content.html' campaign=$campaign.id}
             {/if}
             <span class="close-button close-on-click glyphicon glyphicon-remove"></span>
         </div>

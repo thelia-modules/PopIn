@@ -5,6 +5,7 @@ namespace PopIn;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Propel;
+use Symfony\Component\Finder\Finder;
 use Thelia\Core\Template\TemplateDefinition;
 use Thelia\Core\Translation\Translator;
 use Thelia\Install\Database;
@@ -32,10 +33,28 @@ class PopIn extends BaseModule
     {
         $database = new Database($con);
 
-        $database->insertSql(null, [__DIR__ . "/Config/create.sql", __DIR__ . "/Config/insert.sql"]);
+        $database->insertSql(null, [__DIR__ . "/Config/thelia.sql", __DIR__ . "/Config/insert.sql"]);
 
         $this->loadBackOfficeTranslationResources();
         $this->createPopInImageFolder();
+    }
+
+    public function update($currentVersion, $newVersion, ConnectionInterface $con = null)
+    {
+        $finder = Finder::create()
+            ->name('*.sql')
+            ->depth(0)
+            ->sortByName()
+            ->in(__DIR__ . DS . 'Config' . DS . 'update');
+
+        $database = new Database($con);
+
+        /** @var \SplFileInfo $file */
+        foreach ($finder as $file) {
+            if (version_compare($currentVersion, $file->getBasename('.sql'), '<')) {
+                $database->insertSql(null, [$file->getPathname()]);
+            }
+        }
     }
 
     public function getHooks()

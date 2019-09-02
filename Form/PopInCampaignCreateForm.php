@@ -73,6 +73,7 @@ class PopInCampaignCreateForm extends BasePopInCampaignCreateForm
                 ],
                 "required" => false,
                 "choices" => [
+                    "free-content" => $this->translator->trans("Free Content"),
                     "content" => $this->translator->trans("Content"),
                     "content-image" => $this->translator->trans("Image"),
                     // do not use the core "Template" translation, as it refers to product template

@@ -7,8 +7,10 @@
 namespace PopIn\Form\Base;
 
 use PopIn\PopIn;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Thelia\Form\BaseForm;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use PopIn\Validator\Constraints as ModuleAssert;
 
 /**
  * Class PopInCampaignCreateForm
@@ -27,7 +29,9 @@ class PopInCampaignCreateForm extends BaseForm
         $this->addStartField($translationKeys, $fieldsIdKeys);
         $this->addEndField($translationKeys, $fieldsIdKeys);
         $this->addContentSourceTypeField($translationKeys, $fieldsIdKeys);
+        $this->addContentTextAreaField($translationKeys, $fieldsIdKeys);
         $this->addContentSourceIdField($translationKeys, $fieldsIdKeys);
+        $this->addContentLinkField($translationKeys, $fieldsIdKeys);
     }
 
     protected function addStartField(array $translationKeys, array $fieldsIdKeys)
@@ -81,6 +85,33 @@ class PopInCampaignCreateForm extends BaseForm
             )
         ));
     }
+
+    protected function addContentTextAreaField(array $translationKeys, array $fieldsIdKeys)
+    {
+        $this->formBuilder->add("text_free", "textarea", array(
+            "label" => $this->translator->trans("text_free", [], PopIn::MESSAGE_DOMAIN),
+            "label_attr" => ["for" => $this->readKey("text_free", $fieldsIdKeys)],
+            "required" => true,
+            "constraints" => array(
+            ),
+            "attr" => array(
+            )
+        ));
+    }
+    protected function addContentlinkField(array $translationKeys, array $fieldsIdKeys)
+    {
+        $this->formBuilder->add("link", new UrlType(), array(
+            "label" => $this->translator->trans("link", [], PopIn::MESSAGE_DOMAIN),
+            "label_attr" => ["for" => "link"],
+            "required" => true,
+            "constraints" => array(
+                new ModuleAssert\Url
+            ),
+            "attr" => array(
+            )
+        ));
+    }
+
 
     public function getName()
     {
