@@ -6,13 +6,14 @@
 
 namespace PopIn\Event\Module;
 
-use PopIn\Event\Module\Base\PopInEvents as BasePopInEvents;
-
 /**
  * Class PopInEvents
  * @package PopIn\Event\Module
  * @author TheliaStudio
  */
-class PopInEvents extends BasePopInEvents
+class PopInEvents
 {
+    const POP_IN_CAMPAIGN_CREATE = "action.pop_in_campaign.create";
+    const POP_IN_CAMPAIGN_UPDATE = "action.pop_in_campaign.update";
+    const POP_IN_CAMPAIGN_DELETE = "action.pop_in_campaign.delete";
 }

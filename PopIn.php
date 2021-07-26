@@ -5,6 +5,7 @@ namespace PopIn;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Propel;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 use Thelia\Core\Template\TemplateDefinition;
 use Thelia\Core\Translation\Translator;
 use Thelia\Install\Database;
@@ -28,13 +29,13 @@ class PopIn extends BaseModule
 
     const CONF_KEY_IMAGE_FOLDER_ID = "popin.image_folder_id";
 
-    public function postActivation(ConnectionInterface $con = null)
+    public function postActivation(ConnectionInterface $con = null): void
     {
-        $database = new Database($con);
-
-        $database->insertSql(null, [__DIR__ . "/Config/create.sql", __DIR__ . "/Config/insert.sql"]);
-
-        $this->loadBackOfficeTranslationResources();
+        if (!self::getConfigValue('is_initialized', false)) {
+            $database = new Database($con);
+            $database->insertSql(null, [__DIR__.'/Config/TheliaMain.sql']);
+            self::setConfigValue('is_initialized', true);
+        }
         $this->createPopInImageFolder();
     }
 
@@ -52,22 +53,6 @@ class PopIn extends BaseModule
                 "active" => true,
             ]
         ];
-    }
-
-    /**
-     * Load the back-office translations into the translator.
-     */
-    protected function loadBackOfficeTranslationResources()
-    {
-        /** @var Lang $lang */
-        foreach (LangQuery::create()->find() as $lang) {
-            Translator::getInstance()->addResource(
-                "php",
-                __DIR__ . "/I18n/backOffice/default/" . $lang->getLocale() . ".php",
-                $lang->getLocale(),
-                static::MESSAGE_DOMAIN_BO
-            );
-        }
     }
 
     /**
@@ -89,7 +74,7 @@ class PopIn extends BaseModule
         try {
             // create the folder
             $folder = new Folder();
-            $folder->setVisible(true);
+            $folder->setVisible(false);
 
             /** @var Lang $lang */
             foreach (LangQuery::create()->find() as $lang) {
@@ -147,5 +132,18 @@ class PopIn extends BaseModule
         }
 
         Propel::getConnection()->commit();
+    }
+
+    /**
+     * Defines how services are loaded in your modules
+     *
+     * @param ServicesConfigurator $servicesConfigurator
+     */
+    public static function configureServices(ServicesConfigurator $servicesConfigurator): void
+    {
+        $servicesConfigurator->load(self::getModuleCode().'\\', __DIR__)
+            ->exclude([THELIA_MODULE_DIR . ucfirst(self::getModuleCode()). "/I18n/*"])
+            ->autowire(true)
+            ->autoconfigure(true);
     }
 }

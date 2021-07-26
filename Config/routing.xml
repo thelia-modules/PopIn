@@ -3,16 +3,16 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="popin.config" path="/admin/module/PopIn">
-        <default key="_controller">PopIn:Configuration:config</default>
+        <default key="_controller">PopIn\Controller\ConfigurationController::configAction</default>
     </route>
     <route id="popin.pop_in_campaign.create" path="/admin/module/PopIn/pop_in_campaign" methods="post">
-        <default key="_controller">PopIn:PopInCampaign:create</default>
+        <default key="_controller">PopIn\Controller\PopInCampaignController::createAction</default>
     </route>
     <route id="popin.pop_in_campaign.edit" path="/admin/module/PopIn/pop_in_campaign/edit" methods="post">
-        <default key="_controller">PopIn:PopInCampaign:processUpdate</default>
+        <default key="_controller">PopIn\Controller\PopInCampaignController::processUpdateAction</default>
     </route>
     <route id="popin.pop_in_campaign.delete" path="/admin/module/PopIn/pop_in_campaign/delete" methods="get">
-        <default key="_controller">PopIn:PopInCampaign:delete</default>
+        <default key="_controller">PopIn\Controller\PopInCampaignController::deleteAction</default>
     </route>
 
 </routes>

@@ -6,12 +6,22 @@
 
 namespace PopIn\Form\Type;
 
-use PopIn\Form\Type\Base\PopInCampaignIdType as BasePopInCampaignIdType;
+use PopIn\Model\PopInCampaignQuery;
+use Thelia\Core\Form\Type\Field\AbstractIdType;
 
 /**
  * Class PopInCampaign
  * @package PopIn\Form
  */
-class PopInCampaignIdType extends BasePopInCampaignIdType
+class PopInCampaignIdType extends AbstractIdType
 {
+    protected function getQuery()
+    {
+        return new PopInCampaignQuery();
+    }
+
+    public function getName()
+    {
+        return static::class;
+    }
 }

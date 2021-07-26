@@ -20,18 +20,7 @@
         <hook id="popin.hook.back" class="PopIn\Hook\Back\BackHook" scope="request">
             <tag name="hook.event_listener" type="backoffice" event="main.top-menu-tools"/>
             <tag name="hook.event_listener" type="backoffice" event="tools.col1-bottom"/>
-            <argument type="service" id="router.popin"/>
         </hook>
     </hooks>
-
-    <services>
-        <service id="action.popin.pop_in_campaign_table" class="PopIn\Action\PopInCampaignAction">
-            <tag name="kernel.event_subscriber"/>
-        </service>
-        <service id="popin.form.type.pop_in_campaign_id" class="PopIn\Form\Type\PopInCampaignIdType">
-            <argument id="thelia.translator" type="service"/>
-            <tag name="thelia.form.type"/>
-        </service>
-    </services>
 
 </config>

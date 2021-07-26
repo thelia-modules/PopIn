@@ -6,12 +6,15 @@
 
 namespace PopIn\Event;
 
-use PopIn\Event\Base\PopInCampaignEvents as BasePopInCampaignEvents;
+use PopIn\Event\Module\PopInEvents as ChildPopInEvents;
 
 /**
  * Class PopInCampaignEvents
  * @package PopIn\Event
  */
-class PopInCampaignEvents extends BasePopInCampaignEvents
+class PopInCampaignEvents
 {
+    const CREATE = ChildPopInEvents::POP_IN_CAMPAIGN_CREATE;
+    const UPDATE = ChildPopInEvents::POP_IN_CAMPAIGN_UPDATE;
+    const DELETE = ChildPopInEvents::POP_IN_CAMPAIGN_DELETE;
 }

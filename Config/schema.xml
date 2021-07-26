@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database defaultIdMethod="native" name="thelia"
+<database defaultIdMethod="native" name="TheliaMain"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="../../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+          xsi:noNamespaceSchemaLocation="../../../../vendor/thelia/propel/resources/xsd/database.xsd" >
 
     <table name="pop_in_campaign" namespace="PopIn\Model">
         <column name="id" type="INTEGER" required="true" autoIncrement="true" primaryKey="true" />
@@ -9,6 +9,13 @@
         <column name="end" type="TIMESTAMP" />
         <column name="content_source_type" type="VARCHAR" />
         <column name="content_source_id" type="VARCHAR" />
+        <column name="custom_title" type="VARCHAR" />
+        <column name="custom_description" type="LONGVARCHAR" />
+        <column name="custom_postscriptum" type="VARCHAR" />
+        <column name="custom_link" type="VARCHAR" />
+        <behavior name="i18n">
+          <parameter name="i18n_columns" value="custom_title, custom_description, custom_postscriptum, custom_link" />
+        </behavior>
     </table>
 
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
