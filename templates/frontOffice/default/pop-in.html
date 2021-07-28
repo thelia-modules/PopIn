@@ -11,6 +11,16 @@
                 {include file=$campaign.content_source_id}
             {elseif $campaign.content_source_type == 'hook'}
                 {hook name='pop-in.content' campaign=$campaign.id}
+            {else}
+                {loop name="pop-in-campaign" type="pop-in-campaign" id=$campaign.id}
+                    {loop type="library_image" name="library_image" item_id=$campaign.id item_type="popin" code="main" width="64" height="64"}
+                        <img src="{$URL}" alt="{$TITLE}">
+                    {/loop}
+                    <h1>{$CUSTOM_TITLE}</h1>
+                    <p>{$CUSTOM_DESCRIPTION}</p>
+                    <p>{$CUSTOM_POSTSCRIPTUM}</p>
+                    <a href="{$CUSTOM_LINK}">{$CUSTOM_LINK_TEXT}</a>
+                {/loop}
             {/if}
             <span class="close-button close-on-click glyphicon glyphicon-remove"></span>
         </div>

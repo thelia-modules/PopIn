@@ -26,6 +26,7 @@ class PopInCampaignEvent extends ActionEvent
     protected $customDescription;
     protected $customPostscriptum;
     protected $customLink;
+    protected $customLinkText;
 
 
     protected $popInCampaign;
@@ -177,6 +178,24 @@ class PopInCampaignEvent extends ActionEvent
     public function setCustomLink($customLink)
     {
         $this->customLink = $customLink;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomLinkText()
+    {
+        return $this->customLinkText;
+    }
+
+    /**
+     * @param mixed $customLinkText
+     * @return PopInCampaignEvent
+     */
+    public function setCustomLinkText($customLinkText)
+    {
+        $this->customLinkText = $customLinkText;
         return $this;
     }
 

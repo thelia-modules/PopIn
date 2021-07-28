@@ -47,6 +47,7 @@ class PopInCampaignCreateForm extends BaseForm
             "custom_description" => "pop_in_campaign_custom_description",
             "custom_postscriptum" => "pop_in_campaign_custom_postscriptum",
             "custom_link" => "pop_in_campaign_custom_link",
+            "custom_link_text" => "pop_in_campaign_custom_link_text",
         );
     }
 
@@ -64,6 +65,7 @@ class PopInCampaignCreateForm extends BaseForm
         $this->addTextField("custom_description");
         $this->addTextField("custom_postscriptum");
         $this->addTextField("custom_link");
+        $this->addTextField("custom_link_text");
 
         $this->formBuilder->add(
             "custom_image",

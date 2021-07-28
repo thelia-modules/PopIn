@@ -103,7 +103,11 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
             }
 
             if (null !== $customLink = $event->getCustomLink()) {
-                $model->setCustomLink($customTitle);
+                $model->setCustomLink($customLink);
+            }
+
+            if (null !== $customLinkText = $event->getCustomLinkText()) {
+                $model->setCustomLinkText($customLinkText);
             }
 
             $model->save($con);
@@ -115,7 +119,10 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
                     null,
                     "popin",
                     $model->getId(),
-                    "main"
+                    "main",
+                    true,
+                    null,
+                    true
                 );
             }
 

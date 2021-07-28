@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS `pop_in_campaign`;
 CREATE TABLE `pop_in_campaign`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `visible` TINYINT,
     `start` DATETIME,
     `end` DATETIME,
     `content_source_type` VARCHAR(255),
@@ -31,9 +30,10 @@ CREATE TABLE `pop_in_campaign_i18n`
     `id` INTEGER NOT NULL,
     `locale` VARCHAR(5) DEFAULT 'en_US' NOT NULL,
     `custom_title` VARCHAR(255),
-    `custom_description` VARCHAR(255),
+    `custom_description` TEXT,
     `custom_postscriptum` VARCHAR(255),
     `custom_link` VARCHAR(255),
+    `custom_link_text` VARCHAR(255),
     PRIMARY KEY (`id`,`locale`),
     CONSTRAINT `pop_in_campaign_i18n_fk_75ebd9`
         FOREIGN KEY (`id`)

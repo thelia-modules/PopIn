@@ -36,13 +36,13 @@ class FrontHook extends BaseHook
         $now = new \DateTime();
 
         return PopInCampaignQuery::create()
-            ->where(PopInCampaignTableMap::START . Criteria::ISNULL)
+            ->where(PopInCampaignTableMap::COL_START . Criteria::ISNULL)
             ->_or()
-            ->where(PopInCampaignTableMap::START . Criteria::LESS_EQUAL . '?', $now)
+            ->where(PopInCampaignTableMap::COL_START . Criteria::LESS_EQUAL . '?', $now)
             ->_and()
-            ->where(PopInCampaignTableMap::END . Criteria::ISNULL)
+            ->where(PopInCampaignTableMap::COL_END . Criteria::ISNULL)
             ->_or()
-            ->where(PopInCampaignTableMap::END . Criteria::GREATER_EQUAL . '?', $now)
+            ->where(PopInCampaignTableMap::COL_END . Criteria::GREATER_EQUAL . '?', $now)
             ->findOne();
     }
 

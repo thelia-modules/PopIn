@@ -75,6 +75,7 @@ class PopInCampaignController extends AbstractCrudController
             "custom_description" => $object->getCustomDescription(),
             "custom_postscriptum" => $object->getCustomPostscriptum(),
             "custom_link" => $object->getCustomLink(),
+            "custom_link_text" => $object->getCustomLinkText(),
         );
 
         return $this->getUpdateForm($data);
@@ -98,7 +99,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomImage($formData["custom_image"]);
         $event->setCustomDescription($formData["custom_description"]);
         $event->setCustomPostscriptum($formData["custom_postscriptum"]);
-        $event->setCustomLink($formData["custom_link"]);
+        $event->setCustomLinkText($formData["custom_link_text"]);
 
         return $event;
     }
@@ -123,6 +124,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomDescription($formData["custom_description"]);
         $event->setCustomPostscriptum($formData["custom_postscriptum"]);
         $event->setCustomLink($formData["custom_link"]);
+        $event->setCustomLinkText($formData["custom_link_text"]);
 
         return $event;
     }
