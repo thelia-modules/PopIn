@@ -36,7 +36,7 @@ class PopInCampaign extends BaseI18nLoop implements PropelSearchLoopInterface
                 ->set("CONTENT_SOURCE_TYPE", $entry->getContentSourceType())
                 ->set("CONTENT_SOURCE_ID", $entry->getContentSourceId())
                 ->set("CUSTOM_TITLE", $entry->getVirtualColumn("i18n_CUSTOM_TITLE"))
-                ->set("CUSTOM_DESCRIPTION", nl2br($entry->getVirtualColumn("i18n_CUSTOM_DESCRIPTION")))
+                ->set("CUSTOM_DESCRIPTION", $entry->getVirtualColumn("i18n_CUSTOM_DESCRIPTION"))
                 ->set("CUSTOM_POSTSCRIPTUM", $entry->getVirtualColumn("i18n_CUSTOM_POSTSCRIPTUM"))
                 ->set("CUSTOM_LINK",$entry->getVirtualColumn("i18n_CUSTOM_LINK"))
                 ->set("CUSTOM_LINK_TEXT",$entry->getVirtualColumn("i18n_CUSTOM_LINK_TEXT"))
