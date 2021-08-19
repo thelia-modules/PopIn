@@ -62,6 +62,10 @@ class FrontHook extends BaseHook
      */
     public function onMainBodyTop(HookRenderEvent $event)
     {
+        // TODO Fix in Thelia hook called multiple times
+        if (!count($this->getRequest()->attributes->all())) {
+            return;
+        }
         $currentCampaign = static::getCurrentPopInCampaign();
 
         if ($currentCampaign === null) {
