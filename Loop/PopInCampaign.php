@@ -40,6 +40,8 @@ class PopInCampaign extends BaseI18nLoop implements PropelSearchLoopInterface
                 ->set("CUSTOM_POSTSCRIPTUM", $entry->getVirtualColumn("i18n_CUSTOM_POSTSCRIPTUM"))
                 ->set("CUSTOM_LINK",$entry->getVirtualColumn("i18n_CUSTOM_LINK"))
                 ->set("CUSTOM_LINK_TEXT",$entry->getVirtualColumn("i18n_CUSTOM_LINK_TEXT"))
+                ->set("EXCLUDE_CATEGORY_IDS",$entry->getExcludeCategoryIds())
+                ->set("EXCLUDE_CONTENT_IDS",$entry->getExcludeContentIds())
             ;
 
             $loopResult->addRow($row);

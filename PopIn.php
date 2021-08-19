@@ -6,6 +6,7 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Propel;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
+use Symfony\Component\Finder\Finder;
 use Thelia\Core\Template\TemplateDefinition;
 use Thelia\Core\Translation\Translator;
 use Thelia\Install\Database;
@@ -145,5 +146,23 @@ class PopIn extends BaseModule
             ->exclude([THELIA_MODULE_DIR . ucfirst(self::getModuleCode()). "/I18n/*"])
             ->autowire(true)
             ->autoconfigure(true);
+    }
+
+    public function update($currentVersion, $newVersion, ConnectionInterface $con = null): void
+    {
+        $finder = Finder::create()
+            ->name('*.sql')
+            ->depth(0)
+            ->sortByName()
+            ->in(__DIR__ . DS . 'Config' . DS . 'update');
+
+        $database = new Database($con);
+
+        /** @var \SplFileInfo $file */
+        foreach ($finder as $file) {
+            if (version_compare($currentVersion, $file->getBasename('.sql'), '<')) {
+                $database->insertSql(null, [$file->getPathname()]);
+            }
+        }
     }
 }

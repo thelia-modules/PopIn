@@ -48,6 +48,8 @@ class PopInCampaignCreateForm extends BaseForm
             "custom_postscriptum" => "pop_in_campaign_custom_postscriptum",
             "custom_link" => "pop_in_campaign_custom_link",
             "custom_link_text" => "pop_in_campaign_custom_link_text",
+            "exclude_category_ids" => "pop_in_exclude_category_ids",
+            "exclude_content_ids" => "pop_in_exclude_content_ids"
         );
     }
 
@@ -66,6 +68,8 @@ class PopInCampaignCreateForm extends BaseForm
         $this->addTextField("custom_postscriptum");
         $this->addTextField("custom_link");
         $this->addTextField("custom_link_text");
+        $this->addTextField("exclude_category_ids");
+        $this->addTextField("exclude_content_ids");
 
         $this->formBuilder->add(
             "custom_image",
@@ -91,6 +95,8 @@ class PopInCampaignCreateForm extends BaseForm
             "end" => "End",
             "content_source_type" => "Content source type",
             "content_source_data" => "Content source data",
+            "exclude_category_ids" => "Exclude category ids",
+            "exclude_content_ids" => "Exclude content ids"
         );
     }
 

@@ -16,6 +16,8 @@ CREATE TABLE `pop_in_campaign`
     `end` DATETIME,
     `content_source_type` VARCHAR(255),
     `content_source_id` VARCHAR(255),
+    `exclude_category_ids` VARCHAR(255),
+    `exclude_content_ids` VARCHAR(255),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

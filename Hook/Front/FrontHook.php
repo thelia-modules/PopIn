@@ -72,6 +72,20 @@ class FrontHook extends BaseHook
             return;
         }
 
+        $view = $this->getRequest()->attributes->get("_view");
+        if ($view === "category" && $currentCampaign->getExcludeCategoryIds() !== null) {
+            $excludedCategoriesIds = explode(',', $currentCampaign->getExcludeCategoryIds());
+            if (in_array($this->getRequest()->attributes->get('category_id'), $excludedCategoriesIds)) {
+                return;
+            }
+        }
+        if ($view === "content" && $currentCampaign->getExcludeContentIds() !== null) {
+            $excludedContentsIds = explode(',', $currentCampaign->getExcludeContentIds());
+            if (in_array($this->getRequest()->attributes->get('content_id'), $excludedContentsIds)) {
+                return;
+            }
+        }
+
         $event->add(
             $this->render(
                 'pop-in.html',

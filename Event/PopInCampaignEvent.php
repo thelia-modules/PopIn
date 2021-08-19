@@ -27,6 +27,8 @@ class PopInCampaignEvent extends ActionEvent
     protected $customPostscriptum;
     protected $customLink;
     protected $customLinkText;
+    protected $excludeCategoryIds;
+    protected $excludeContentIds;
 
 
     protected $popInCampaign;
@@ -208,6 +210,28 @@ class PopInCampaignEvent extends ActionEvent
     {
         $this->popInCampaign = $popInCampaign;
 
+        return $this;
+    }
+
+    public function getExcludeCategoryIds()
+    {
+        return $this->excludeCategoryIds;
+    }
+
+    public function setExcludeCategoryIds($excludeCategoryIds)
+    {
+        $this->excludeCategoryIds = $excludeCategoryIds;
+        return $this;
+    }
+
+    public function getExcludeContentIds()
+    {
+        return $this->excludeContentIds;
+    }
+
+    public function setExcludeContentIds($excludeContentIds)
+    {
+        $this->excludeContentIds = $excludeContentIds;
         return $this;
     }
 }

@@ -21,7 +21,7 @@
 {block name="main-content"}
     <div id="wrapper" class="container">
 
-        {if $general_error}
+        {if $general_error|default:null}
             <div class="alert alert-danger">
                 {$general_error}
             </div>
@@ -88,7 +88,7 @@
                                                            type="{$type}"
                                                            class="form-control datetime-picker"
                                                            data-date-format="{$label_attr.moment_js_date_format}"
-                                                           {if $START}value="{format_date date=$START format=$label_attr.php_datetime_format}"{/if}>
+                                                           {if $START|default:null}value="{format_date date=$START format=$label_attr.php_datetime_format}"{/if}>
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -102,7 +102,7 @@
                                                            type="{$type}"
                                                            class="form-control datetime-picker"
                                                            data-date-format="{$label_attr.moment_js_date_format}"
-                                                           {if $END}value="{format_date date=$END format=$label_attr.php_datetime_format}"{/if}>
+                                                           {if $END|default:null}value="{format_date date=$END format=$label_attr.php_datetime_format}"{/if}>
                                                     <span class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -115,7 +115,7 @@
                                                     <option value="" selected></option>
                                                     {foreach $choices as $choice}
                                                         <option value="{$choice->value}"
-                                                                {if $CONTENT_SOURCE_TYPE == $choice->value}selected{/if}>
+                                                                {if $CONTENT_SOURCE_TYPE|default:null == $choice->value}selected{/if}>
                                                             {$choice->label}
                                                         </option>
                                                     {/foreach}
@@ -124,10 +124,10 @@
                                         </div>
                                         <div class="col-md-2 form-group content-source-id-form-group">
                                             {form_field form=$form field="content_source_id"}
-                                            {$content_source_id = $CONTENT_SOURCE_ID}
+                                            {$content_source_id = $CONTENT_SOURCE_ID|default:null}
                                                 <div class="content-source-id-field content-source-id-field-default">
                                                     <input name="{$name}" type="text" class="form-control"
-                                                           value="{$CONTENT_SOURCE_ID}">
+                                                           value="{$CONTENT_SOURCE_ID|default:null}">
                                                 </div>
                                                 <div class="content-source-id-field content-source-id-field-content"
                                                      style="display: none;">
@@ -154,13 +154,13 @@
                                                 <div class="content-source-id-field content-source-id-field-template"
                                                      style="display: none;">
                                                     <input name="{$name}" type="text" class="form-control"
-                                                           value="{$CONTENT_SOURCE_ID}">
+                                                           value="{$CONTENT_SOURCE_ID|default:null}">
                                                     <span class="help-block">{intl l='This template will be displayed in the pop-in.' d='popin.bo.default'}</span>
                                                 </div>
                                                 <div class="content-source-id-field content-source-id-field-hook"
                                                      style="display: none;">
                                                     <input name="{$name}" type="text" class="form-control"
-                                                           value="{$CONTENT_SOURCE_ID}">
+                                                           value="{$CONTENT_SOURCE_ID|default:null}">
                                                     <span class="help-block">{intl l='The pop-in.content hook will be called to display the pop-in. The content of this field will be available in the hook.' d='popin.bo.default'}</span>
                                                 </div>
                                                 <div class="content-source-id-field content-source-id-field-custom"
@@ -201,7 +201,7 @@
                                                 <div class="col-md-12 form-group">
                                                     {form_field form=$form field="custom_title"}
                                                         <label for="{$name}">{intl l='Title' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_TITLE}"/>
+                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_TITLE|default:null}"/>
                                                     {/form_field}
                                                 </div>
                                                 <div class="col-md-{if $mode == 'edit' }8{else}12{/if} form-group">
@@ -221,26 +221,42 @@
                                             <div class="col-md-6  form-group">
                                                 {form_field form=$form field="custom_description"}
                                                     <label for="{$name}">{intl l='Description' d='popin.bo.default'}</label>
-                                                    <textarea class="form-control" name="{$name}" id="{$name}" cols="60" rows="5">{$CUSTOM_DESCRIPTION}</textarea>
+                                                    <textarea class="form-control" name="{$name}" id="{$name}" cols="60" rows="5">{$CUSTOM_DESCRIPTION|default:null}</textarea>
                                                 {/form_field}
                                             </div>
                                             <div class="col-md-3 group">
                                                 <div class="col-md-12 form-group">
                                                     {form_field form=$form field="custom_postscriptum"}
                                                         <label for="{$name}">{intl l='Postscriptum' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_POSTSCRIPTUM}"/>
+                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_POSTSCRIPTUM|default:null}"/>
                                                     {/form_field}
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {form_field form=$form field="custom_link"}
                                                         <label for="{$name}">{intl l='Link url' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK}"/>
+                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK|default:null}"/>
                                                     {/form_field}
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {form_field form=$form field="custom_link_text"}
                                                         <label for="{$name}">{intl l='Link text' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK_TEXT}"/>
+                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK_TEXT|default:null}"/>
+                                                    {/form_field}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-6 form-group">
+                                                    {form_field form=$form field="exclude_category_ids"}
+                                                        <label for="{$name}">{intl l='Exclude category ids' d='popin.bo.default'}</label>
+                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CATEGORY_IDS|default:null}"/>
+                                                        <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
+                                                    {/form_field}
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {form_field form=$form field="exclude_content_ids"}
+                                                        <label for="{$name}">{intl l='Exclude content ids' d='popin.bo.default'}</label>
+                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CONTENT_IDS|default:null}"/>
+                                                        <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
                                                     {/form_field}
                                                 </div>
                                             </div>
@@ -256,7 +272,7 @@
                     {call name='pop_in_campaign_row' mode='create'}
                     {/loop}
 
-                    {loop name="pop-in-campaign-list" type="pop-in-campaign" order=$order}
+                    {loop name="pop-in-campaign-list" type="pop-in-campaign" order=$order|default:null}
                         {$pop_in_campaign_id=$ID}
                         {call name='pop_in_campaign_row' mode='edit'}
                     {/loop}
@@ -273,7 +289,7 @@
 
                                 loop_ref       = "pop-in-campaign-list"
                                 max_page_count = 20
-                                page_url       = {url path="/admin/module/PopIn" order=$order target='pop_in_campaign-table'}
+                                page_url       = {url path="/admin/module/PopIn" order=$order|default:null target='pop_in_campaign-table'}
                                 }
                             </td>
                         </tr>

@@ -110,6 +110,10 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
                 $model->setCustomLinkText($customLinkText);
             }
 
+            $model->setExcludeCategoryIds($event->getExcludeCategoryIds());
+
+            $model->setExcludeContentIds($event->getExcludeContentIds());
+
             $model->save($con);
 
             if (null !== $customImage = $event->getCustomImage()) {
