@@ -90,9 +90,8 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
                 $model->setContentSourceId($contentSourceId);
             }
 
-            if (null !== $customTitle = $event->getCustomTitle()) {
-                $model->setCustomTitle($customTitle);
-            }
+            $customTitle = $event->getCustomTitle() ?? "";
+            $model->setCustomTitle($customTitle);
 
             if (null !== $customDescription = $event->getCustomDescription()) {
                 $model->setCustomDescription($customDescription);
