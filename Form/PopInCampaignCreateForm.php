@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Thelia\Form\BaseForm;
 
 /**
@@ -147,6 +148,9 @@ class PopInCampaignCreateForm extends BaseForm
                     "for" => $this->readKey("content_source_type", $fieldsIdKeys)
                 ],
                 "required" => false,
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 "choices" => [
                     $this->translator->trans("Custom", [], PopIn::MESSAGE_DOMAIN)=> "custom",
                     $this->translator->trans("Content")=> "content",
