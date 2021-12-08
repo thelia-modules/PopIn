@@ -43,7 +43,7 @@ class FrontHook extends BaseHook
             ->where(PopInCampaignTableMap::COL_END . Criteria::ISNULL)
             ->_or()
             ->where(PopInCampaignTableMap::COL_END . Criteria::GREATER_EQUAL . '?', $now)
-            ->findOne();
+            ->find();
     }
 
     /**
@@ -66,40 +66,47 @@ class FrontHook extends BaseHook
         if (!count($this->getRequest()->attributes->all())) {
             return;
         }
-        $currentCampaign = static::getCurrentPopInCampaign();
+        $currentCampaigns = static::getCurrentPopInCampaign();
 
-        if ($currentCampaign === null) {
+        if (empty($currentCampaigns)) {
             return;
         }
 
-        if ($this->getSession()->get(static::getSeenSessionKeyForPopInCampaign($currentCampaign))) {
+        foreach ($currentCampaigns as $currentCampaign) {
+            if ($this->getSession()->get(static::getSeenSessionKeyForPopInCampaign($currentCampaign))) {
+                continue;
+            }
+
+            $view = $this->getRequest()->attributes->get("_view");
+            if ($view === "category" && $currentCampaign->getExcludeCategoryIds() !== null) {
+                $excludedCategoriesIds = explode(',', $currentCampaign->getExcludeCategoryIds());
+                if (in_array($this->getRequest()->attributes->get('category_id'), $excludedCategoriesIds)) {
+                    continue;
+                }
+            }
+            if ($view === "content" && $currentCampaign->getExcludeContentIds() !== null) {
+                $excludedContentsIds = explode(',', $currentCampaign->getExcludeContentIds());
+                if (in_array($this->getRequest()->attributes->get('content_id'), $excludedContentsIds)) {
+                    continue;
+                }
+            }
+
+            $event->add(
+                $this->render(
+                    'pop-in.html',
+                    [
+                        'campaign' => $currentCampaign->toArray(TableMap::TYPE_FIELDNAME),
+                    ]
+                )
+            );
+
+            $this->getSession()->set(static::getSeenSessionKeyForPopInCampaign($currentCampaign), true);
+
+            // Only display one pop in at time
             return;
         }
 
-        $view = $this->getRequest()->attributes->get("_view");
-        if ($view === "category" && $currentCampaign->getExcludeCategoryIds() !== null) {
-            $excludedCategoriesIds = explode(',', $currentCampaign->getExcludeCategoryIds());
-            if (in_array($this->getRequest()->attributes->get('category_id'), $excludedCategoriesIds)) {
-                return;
-            }
-        }
-        if ($view === "content" && $currentCampaign->getExcludeContentIds() !== null) {
-            $excludedContentsIds = explode(',', $currentCampaign->getExcludeContentIds());
-            if (in_array($this->getRequest()->attributes->get('content_id'), $excludedContentsIds)) {
-                return;
-            }
-        }
-
-        $event->add(
-            $this->render(
-                'pop-in.html',
-                [
-                    'campaign' => $currentCampaign->toArray(TableMap::TYPE_FIELDNAME),
-                ]
-            )
-        );
-
-        $this->getSession()->set(static::getSeenSessionKeyForPopInCampaign($currentCampaign), true);
+        return;
     }
 
     /**
