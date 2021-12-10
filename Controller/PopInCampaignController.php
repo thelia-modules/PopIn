@@ -251,7 +251,7 @@ class PopInCampaignController extends AbstractCrudController
     protected function redirectToListTemplate()
     {
         return new RedirectResponse(
-            URL::getInstance()->absoluteUrl("/admin/module/PopIn/pop_in_campaign")
+            URL::getInstance()->absoluteUrl("/admin/module/PopIn")
         );
     }
 }
