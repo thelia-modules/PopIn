@@ -78,6 +78,7 @@ class PopInCampaignController extends AbstractCrudController
             "custom_link_text" => $object->getCustomLinkText(),
             "exclude_category_ids" => $object->getExcludeCategoryIds(),
             "exclude_content_ids" => $object->getExcludeContentIds(),
+            "persistent" => $object->getPersistent(),
         );
 
         return $this->getUpdateForm($data);
@@ -104,6 +105,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomLinkText($formData["custom_link_text"]);
         $event->setExcludeCategoryIds($formData["exclude_category_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
+        $event->setPersistent($formData["persistent"] === "on");
 
         return $event;
     }
@@ -131,6 +133,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomLinkText($formData["custom_link_text"]);
         $event->setExcludeCategoryIds($formData["exclude_category_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
+        $event->setPersistent($formData["persistent"] === "on");
 
         return $event;
     }

@@ -28,11 +28,8 @@
         {/if}
 
         <div class="general-block-decorator">
-            <div class="table-responsive">
-                <table class="table table-striped" id="pop_in_campaign-table">
-                    <caption class="clearfix">
-                        {intl l="Pop-in campaigns" d="popin.bo.default"}
-                    </caption>
+            <div class="">
+                <div class="" id="pop_in_campaign-table">
                     <div class="col-md-12">
                         <div class="form-container">
                             <div class="inner-toolbar" style="border:none;">
@@ -41,7 +38,7 @@
                                         {loop name="lang_list" type="lang" backend_context="1"}
                                         {$lang_url = {url path={$current_url nofilter} edit_language_id=$ID}}
                                             <li {if $ID == $edit_language_id}class="active"{/if}>
-                                                <a class="language-change-button" data-language-id="{$ID}" href="{$lang_url nofilter}" title="{intl l='Edit information in %lng' d="lgseeds.bo.default" lng={$TITLE}}">
+                                                <a class="language-change-button" data-language-id="{$ID}" href="{$lang_url nofilter}" title="{intl l='Edit information in %lng' d="popin.bo.default" lng={$TITLE}}">
                                                     <img src="{image file="assets/img/svgFlags/$CODE.svg"}" />
                                                 </a>
                                             </li>
@@ -51,15 +48,13 @@
                             </div>
                         </div>
                     </div>
-                    <thead>
-                    <tr class="row">
-                        <th class="col-md-3">{intl l='Start' d='popin.bo.default'}</th>
-                        <th class="col-md-3">{intl l='End' d='popin.bo.default'}</th>
-                        <th class="col-md-2">{intl l='Content' d='popin.bo.default'}</th>
-                        <th class="col-md-2"></th>
-                        <th class="col-md-2"></th>
-                    </tr>
-                    </thead>
+
+                    <div class="row">
+                        <b class="col-md-3">{intl l='Start' d='popin.bo.default'}</b>
+                        <b class="col-md-3">{intl l='End' d='popin.bo.default'}</b>
+                        <b class="col-md-2">{intl l='Content' d='popin.bo.default'}</b>
+                    </div>
+
 
                     {function name='pop_in_campaign_row'}
                         {if $mode == 'edit'}
@@ -70,18 +65,30 @@
                             {$form_action = {url path='/admin/module/PopIn/pop_in_campaign'}}
                         {/if}
                         {$popInCampaignId = $ID}
-                        <tr class="row">
-                            <td colspan="1000" style="padding-top: 30px">
-                                {form name=$form_name}
-                                    <form method="post" action="{$form_action}" enctype="multipart/form-data">
-                                        {render_form_field form=$form field="success_url" value={url path='/admin/module/PopIn/'}}
-                                        {if $ID}
-                                            {form_field form=$form field="id"}
-                                                <input name="{$name}" type="hidden" value="{$popInCampaignId}">
-                                            {/form_field}
-                                        {/if}
-                                        {form_hidden_fields form=$form}
-                                        <div class="col-md-3 form-group">
+
+                        {form name=$form_name}
+                        {if $mode == "edit"}
+                            {if
+                            (($smarty.now|date_format:"%Y%m%d") >= ($START|date_format:"%Y%m%d"))
+                            AND
+                            (($smarty.now|date_format:"%Y%m%d") <= ($END|date_format:"%Y%m%d"))
+                            }
+                                <span class="label label-success">{intl l='Active' d='popin.bo.default'}</span>
+                            {else}
+                                <span class="label label-danger">{intl l='Inactive' d='popin.bo.default'}</span>
+                            {/if}
+                        {/if}
+                            <form method="post" action="{$form_action}" enctype="multipart/form-data" class="panel panel-default">
+                                {render_form_field form=$form field="success_url" value={url path='/admin/module/PopIn/'}}
+                                {if $ID}
+                                    {form_field form=$form field="id"}
+                                        <input name="{$name}" type="hidden" value="{$popInCampaignId}">
+                                    {/form_field}
+                                {/if}
+                                {form_hidden_fields form=$form}
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-2 form-group">
                                             {form_field form=$form field="start"}
                                                 <div class="input-group">
                                                     <input name="{$name}"
@@ -95,7 +102,7 @@
                                                 </div>
                                             {/form_field}
                                         </div>
-                                        <div class="col-md-3 form-group">
+                                        <div class="col-md-2 form-group">
                                             {form_field form=$form field="end"}
                                                 <div class="input-group">
                                                     <input name="{$name}"
@@ -169,13 +176,19 @@
                                                 </div>
                                             {/form_field}
                                         </div>
+                                        <div class="col-md-2">
+                                            {form_field form=$form field="persistent"}
+                                                <input type="checkbox" name="{$name}" id="{$name}_{$popInCampaignId}" {if $PERSISTENT|default:null === 1}checked{/if}>
+                                                <label for="{$name}_{$popInCampaignId}">{intl l="Persistent"}</label>
+                                            {/form_field}
+                                        </div>
                                         <div class="col-md-2 btn-group">
                                             {if $mode == 'create'}
                                                 {loop name="auth-edit" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="PopIn"}
                                                     <button type="submit"
                                                             class="btn btn-success"
                                                             title="{intl l='Add a campaign' d='popin.bo.default'}">
-                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                        {intl l="Create"} <i class="glyphicon glyphicon-plus"></i>
                                                     </button>
                                                 {/loop}
                                             {elseif $mode == 'edit'}
@@ -195,107 +208,123 @@
                                                 {/loop}
                                             {/if}
                                         </div>
-                                        <div class="col-md-12 content-source-id-field content-source-id-field-custom"
-                                             style="display: none;">
-                                            <div class="col-md-3 group">
-                                                <div class="col-md-12 form-group">
-                                                    {form_field form=$form field="custom_title"}
-                                                        <label for="{$name}">{intl l='Title' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_TITLE|default:null}"/>
-                                                    {/form_field}
-                                                </div>
-                                                <div class="col-md-{if $mode == 'edit' }8{else}12{/if} form-group">
-                                                    {form_field form=$form field="custom_image"}
-                                                        <label for="{$name}">{intl l='Image' d='popin.bo.default'}</label>
-                                                        <input class="form-control"  id="{$name}" name="{$name}" type="{$type}"/>
-                                                    {/form_field}
-                                                </div>
-                                                {if $mode == 'edit' }
-                                                    <div class="col-md-4">
-                                                        {loop type="library_image" name="library_image" item_id=$popInCampaignId item_type="popin" code="main" width="64" height="64"}
-                                                            <img src="{$URL}" alt="{$TITLE}">
-                                                        {/loop}
-                                                    </div>
-                                                {/if}
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    {if $mode === 'edit'}
+                                        <div class="row content-source-id-field content-source-id-field-custom" style="display:none;">
+                                            <div class="col-md-6 form-group">
+                                                {form_field form=$form field="custom_title"}
+                                                    <label for="{$name}">{intl l='Title' d='popin.bo.default'}</label>
+                                                    <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_TITLE|default:null}"/>
+                                                {/form_field}
                                             </div>
-                                            <div class="col-md-6  form-group">
+                                        </div>
+
+
+                                        <a style="display: block; margin-bottom: 2rem;" role="button" data-toggle="collapse" href="#collapse{$popInCampaignId}" aria-expanded="true" aria-controls="collapse{$i}">
+                                            {intl l="Voir details" d='popin.bo.default'}
+                                        </a>
+                                    {/if}
+
+                                    <div id="collapse{$popInCampaignId}" class="panel-collapse {if $mode === 'edit'}collapse{/if}" role="tabpanel">
+                                        <div class="row content-source-id-field content-source-id-field-custom" style="display: none;">
+                                            <div class="col-md-3 group">
+                                                <div class="row">
+                                                    <div class="col-md-{if $mode == 'edit' }8{else}12{/if} form-group">
+                                                        {form_field form=$form field="custom_image"}
+                                                            <label for="{$name}">{intl l='Image' d='popin.bo.default'}</label>
+                                                            <input class="form-control"  id="{$name}" name="{$name}" type="{$type}"/>
+                                                        {/form_field}
+                                                    </div>
+                                                    {if $mode == 'edit' }
+                                                        <div class="col-md-4">
+                                                            {loop type="library_image" name="library_image" item_id=$popInCampaignId item_type="popin" code="main" width="64" height="64"}
+                                                                <img src="{$URL}" alt="{$TITLE}">
+                                                            {/loop}
+                                                        </div>
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 form-group">
                                                 {form_field form=$form field="custom_description"}
                                                     <label for="{$name}">{intl l='Description' d='popin.bo.default'}</label>
                                                     <textarea class="form-control" name="{$name}" id="{$name}" cols="60" rows="5">{$CUSTOM_DESCRIPTION|default:null}</textarea>
                                                 {/form_field}
                                             </div>
                                             <div class="col-md-3 group">
-                                                <div class="col-md-12 form-group">
+                                                <div class="form-group">
                                                     {form_field form=$form field="custom_postscriptum"}
                                                         <label for="{$name}">{intl l='Postscriptum' d='popin.bo.default'}</label>
                                                         <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_POSTSCRIPTUM|default:null}"/>
                                                     {/form_field}
                                                 </div>
-                                                <div class="col-md-6 form-group">
-                                                    {form_field form=$form field="custom_link"}
-                                                        <label for="{$name}">{intl l='Link url' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK|default:null}"/>
-                                                    {/form_field}
-                                                </div>
-                                                <div class="col-md-6 form-group">
-                                                    {form_field form=$form field="custom_link_text"}
-                                                        <label for="{$name}">{intl l='Link text' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK_TEXT|default:null}"/>
-                                                    {/form_field}
+                                                <div class="row">
+                                                    <div class="col-md-6 form-group">
+                                                        {form_field form=$form field="custom_link"}
+                                                            <label for="{$name}">{intl l='Link url' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK|default:null}"/>
+                                                        {/form_field}
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        {form_field form=$form field="custom_link_text"}
+                                                            <label for="{$name}">{intl l='Link text' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$CUSTOM_LINK_TEXT|default:null}"/>
+                                                        {/form_field}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <div class="col-md-6 form-group">
-                                                    {form_field form=$form field="exclude_category_ids"}
-                                                        <label for="{$name}">{intl l='Exclude category ids' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CATEGORY_IDS|default:null}"/>
-                                                        <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
-                                                    {/form_field}
-                                                </div>
-                                                <div class="col-md-6 form-group">
-                                                    {form_field form=$form field="exclude_content_ids"}
-                                                        <label for="{$name}">{intl l='Exclude content ids' d='popin.bo.default'}</label>
-                                                        <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CONTENT_IDS|default:null}"/>
-                                                        <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
-                                                    {/form_field}
+                                                <div class="row">
+                                                    <div class="col-md-6 form-group">
+                                                        {form_field form=$form field="exclude_category_ids"}
+                                                            <label for="{$name}">{intl l='Exclude category ids' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CATEGORY_IDS|default:null}"/>
+                                                            <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
+                                                        {/form_field}
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        {form_field form=$form field="exclude_content_ids"}
+                                                            <label for="{$name}">{intl l='Exclude content ids' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CONTENT_IDS|default:null}"/>
+                                                            <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
+                                                        {/form_field}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                {/form}
-                            </td>
-                        </tr>
+                                    </div>
+                                </div>
+                            </form>
+                        {/form}
+
+
                     {/function}
 
-                    <tbody>
-                    {loop name="auth-create" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="PopIn"}
-                    {call name='pop_in_campaign_row' mode='create'}
-                    {/loop}
+                    <div>
+                        {loop name="auth-create" type="auth" role="ADMIN" resource="admin.module" access="CREATE" module="PopIn"}
+                        {call name='pop_in_campaign_row' mode='create'}
+                        {/loop}
 
-                    {loop name="pop-in-campaign-list" type="pop-in-campaign" order=$order|default:null}
+                        {loop name="pop-in-campaign-list" type="pop-in-campaign" order=$order|default:null}
                         {$pop_in_campaign_id=$ID}
                         {call name='pop_in_campaign_row' mode='edit'}
-                    {/loop}
+                        {/loop}
 
 
-                    </tbody>
+                    </div>
 
                     {ifloop rel="pop-in-campaign-list"}
-                        <tfoot>
-                        <tr>
-                            <td colspan="1000">
-                                {include
-                                file           = "includes/pagination.html"
-
-                                loop_ref       = "pop-in-campaign-list"
-                                max_page_count = 20
-                                page_url       = {url path="/admin/module/PopIn" order=$order|default:null target='pop_in_campaign-table'}
-                                }
-                            </td>
-                        </tr>
-                        </tfoot>
+                        <div>
+                            {include
+                            file           = "includes/pagination.html"
+                            loop_ref       = "pop-in-campaign-list"
+                            max_page_count = 20
+                            page_url       = {url path="/admin/module/PopIn" order=$order|default:null target='pop_in_campaign-table'}
+                            }
+                        </div>
                     {/ifloop}
-                </table>
+                </div>
             </div>
         </div>
     </div>
@@ -317,36 +346,36 @@
 
             function displayContentSourceField($form) {
                 var $contentSourceType = $form
-                        .find('.content-source-type-form-group')
-                        .find('select')
-                        .val();
+                    .find('.content-source-type-form-group')
+                    .find('select')
+                    .val();
                 if ($contentSourceType == '') {
                     $contentSourceType = 'default';
                 }
 
                 // hide and disable the fields for all content types
                 $form
-                        .find('.content-source-id-field')
-                        .hide()
-                        .find('.form-control')
-                        .prop('disabled', true);
+                    .find('.content-source-id-field')
+                    .hide()
+                    .find('.form-control')
+                    .prop('disabled', true);
                 // show and enable the field for the selected content type
                 $form
-                        .find('.content-source-id-field-' + $contentSourceType)
-                        .show()
-                        .find('.form-control')
-                        .prop('disabled', false);
+                    .find('.content-source-id-field-' + $contentSourceType)
+                    .show()
+                    .find('.form-control')
+                    .prop('disabled', false);
             }
 
             $('#pop_in_campaign-table').find('form').each(function () {
                 var $form = $(this);
                 displayContentSourceField($form);
                 $(this)
-                        .find('.content-source-type-form-group')
-                        .find('select')
-                        .on('change', function (event) {
-                            displayContentSourceField($(this).parents('form'), true);
-                        });
+                    .find('.content-source-type-form-group')
+                    .find('select')
+                    .on('change', function (event) {
+                        displayContentSourceField($(this).parents('form'), true);
+                    });
             });
         })(jQuery);
     </script>

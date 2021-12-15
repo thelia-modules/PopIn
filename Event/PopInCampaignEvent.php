@@ -29,6 +29,7 @@ class PopInCampaignEvent extends ActionEvent
     protected $customLinkText;
     protected $excludeCategoryIds;
     protected $excludeContentIds;
+    protected $persistent;
 
 
     protected $popInCampaign;
@@ -233,6 +234,17 @@ class PopInCampaignEvent extends ActionEvent
     {
         $this->excludeContentIds = $excludeContentIds;
         return $this;
+    }
+
+    public function setPersistent($persistent)
+    {
+        $this->persistent = $persistent;
+        return $this;
+    }
+
+    public function getPersistent()
+    {
+        return $this->persistent;
     }
 }
 

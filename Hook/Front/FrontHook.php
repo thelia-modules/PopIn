@@ -51,9 +51,10 @@ class FrontHook extends BaseHook
      * @param PopInCampaign $campaign
      * @return string
      */
-    protected static function getSeenSessionKeyForPopInCampaign(PopInCampaign $campaign)
+    public static function getSeenSessionKeyForPopInCampaign(PopInCampaign $campaign = null, $campaignId = null)
     {
-        return static::$BASE_SESSION_KEY_CAMPAIGN_SEEN . '.' . $campaign->getId();
+        $id = $campaign? $campaign->getId(): $campaignId;
+        return static::$BASE_SESSION_KEY_CAMPAIGN_SEEN . '.' . $id;
     }
 
     /**
@@ -100,7 +101,9 @@ class FrontHook extends BaseHook
                 )
             );
 
-            $this->getSession()->set(static::getSeenSessionKeyForPopInCampaign($currentCampaign), true);
+            if (0 === $currentCampaign->getpersistent()) {
+                $this->getSession()->set(static::getSeenSessionKeyForPopInCampaign($currentCampaign), true);
+            }
 
             // Only display one pop in at time
             return;
