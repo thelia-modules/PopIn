@@ -1,7 +1,7 @@
 {* render the pop-in *}
 
 <div id="pop-in">
-    <div class="mask">
+    <div class="mask" data-popin-id="{$campaign.id}">
         <div class="content">
             {if $campaign.content_source_type == 'content'}
                 {include file='pop-in-content.html' content_id=$campaign.content_source_id}
@@ -22,7 +22,7 @@
                     <a href="{$CUSTOM_LINK}">{$CUSTOM_LINK_TEXT}</a>
                 {/loop}
             {/if}
-            <span class="close-button close-on-click glyphicon glyphicon-remove"></span>
+            <span class="close-button close-on-click glyphicon glyphicon-remove" data-popin-id="{$campaign.id}"></span>
         </div>
     </div>
 </div>

@@ -5,7 +5,6 @@ namespace PopIn\Hook\Front;
 use PopIn\Model\Map\PopInCampaignTableMap;
 use PopIn\Model\PopInCampaign;
 use PopIn\Model\PopInCampaignQuery;
-use PopIn\PopIn;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Map\TableMap;
 use Thelia\Core\Event\Hook\HookRenderEvent;
@@ -20,12 +19,7 @@ class FrontHook extends BaseHook
      * Base session key used to store if a campaign has been seen. The campaign id will be appended later.
      * @var string
      */
-    protected static $BASE_SESSION_KEY_CAMPAIGN_SEEN;
-
-    public function __construct()
-    {
-        self::$BASE_SESSION_KEY_CAMPAIGN_SEEN = PopIn::getModuleCode() . '.seen.campaign';
-    }
+    protected static $BASE_SESSION_KEY_CAMPAIGN_SEEN = "popin.seen.campaign";
 
     /**
      * Get the currently running pop-in campaign (if any).
@@ -53,7 +47,7 @@ class FrontHook extends BaseHook
      */
     public static function getSeenSessionKeyForPopInCampaign(PopInCampaign $campaign = null, $campaignId = null)
     {
-        $id = $campaign? $campaign->getId(): $campaignId;
+        $id = $campaign ? $campaign->getId() : $campaignId;
         return static::$BASE_SESSION_KEY_CAMPAIGN_SEEN . '.' . $id;
     }
 
@@ -101,7 +95,7 @@ class FrontHook extends BaseHook
                 )
             );
 
-            if (0 === $currentCampaign->getpersistent()) {
+            if (0 === $currentCampaign->getPersistent()) {
                 $this->getSession()->set(static::getSeenSessionKeyForPopInCampaign($currentCampaign), true);
             }
 

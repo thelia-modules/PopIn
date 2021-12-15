@@ -13,11 +13,10 @@ class PopInFrontController extends BaseFrontController
     /**
      * @Route("/popin/{popinId}/dismiss", name="pop_in_dismiss", methods="POST")
      */
-    public function dismissPopIn($popInId, Request $request)
+    public function dismissPopIn($popinId, Request $request)
     {
-        $request->getSession()->set(FrontHook::getSeenSessionKeyForPopInCampaign(null, $popInId), true);
+        $request->getSession()->set(FrontHook::getSeenSessionKeyForPopInCampaign(null, $popinId), true);
 
         return new Response();
     }
-
 }
