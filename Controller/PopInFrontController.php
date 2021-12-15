@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PopInFrontController extends BaseFrontController
 {
     /**
-     * @Route("/popin/{popinId]/dismiss", name="pop_in_dismiss", methods="POST")
+     * @Route("/popin/{popinId}/dismiss", name="pop_in_dismiss", methods="POST")
      */
     public function dismissPopIn($popInId, Request $request)
     {
