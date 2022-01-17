@@ -113,6 +113,8 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
 
             $model->setExcludeContentIds($event->getExcludeContentIds());
 
+            $model->setExcludeHome($event->getExcludeHome());
+
             $model->setPersistent($event->getPersistent());
 
             $model->save($con);

@@ -276,18 +276,24 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="row">
-                                                    <div class="col-md-6 form-group">
+                                                    <div class="col-md-5 form-group">
                                                         {form_field form=$form field="exclude_category_ids"}
                                                             <label for="{$name}">{intl l='Exclude category ids' d='popin.bo.default'}</label>
                                                             <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CATEGORY_IDS|default:null}"/>
                                                             <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
                                                         {/form_field}
                                                     </div>
-                                                    <div class="col-md-6 form-group">
+                                                    <div class="col-md-5 form-group">
                                                         {form_field form=$form field="exclude_content_ids"}
                                                             <label for="{$name}">{intl l='Exclude content ids' d='popin.bo.default'}</label>
                                                             <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CONTENT_IDS|default:null}"/>
                                                             <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
+                                                        {/form_field}
+                                                    </div>
+                                                    <div class="col-md-2 form-group">
+                                                        {form_field form=$form field="exclude_home"}
+                                                            <label for="{$name}_{$popInCampaignId}">{intl l='Exclude from home' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}_{$popInCampaignId}" name="{$name}" type="checkbox" {if $EXCLUDE_HOME|default:null === 1}checked{/if}/>
                                                         {/form_field}
                                                     </div>
                                                 </div>

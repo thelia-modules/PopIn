@@ -18,6 +18,7 @@ CREATE TABLE `pop_in_campaign`
     `content_source_id` VARCHAR(255),
     `exclude_category_ids` VARCHAR(255),
     `exclude_content_ids` VARCHAR(255),
+    `exclude_home` TINYINT DEFAULT 0,
     `persistent` TINYINT DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;

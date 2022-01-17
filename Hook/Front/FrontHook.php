@@ -67,6 +67,7 @@ class FrontHook extends BaseHook
             return;
         }
 
+        /** @var PopInCampaign $currentCampaign */
         foreach ($currentCampaigns as $currentCampaign) {
             if ($this->getSession()->get(static::getSeenSessionKeyForPopInCampaign($currentCampaign))) {
                 continue;
@@ -84,6 +85,9 @@ class FrontHook extends BaseHook
                 if (in_array($this->getRequest()->attributes->get('content_id'), $excludedContentsIds)) {
                     continue;
                 }
+            }
+            if ($view === "index" && $currentCampaign->getExcludeHome()) {
+                continue;
             }
 
             $event->add(

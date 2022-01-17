@@ -64,7 +64,6 @@ class PopInCampaignController extends AbstractCrudController
      */
     protected function hydrateObjectForm(ParserContext $parserContext, $object)
     {
-
         $data = array(
             "id" => $object->getId(),
             "start" => $object->getStart(),
@@ -78,6 +77,7 @@ class PopInCampaignController extends AbstractCrudController
             "custom_link_text" => $object->getCustomLinkText(),
             "exclude_category_ids" => $object->getExcludeCategoryIds(),
             "exclude_content_ids" => $object->getExcludeContentIds(),
+            "exclude_home" => $object->getExcludeHome(),
             "persistent" => $object->getPersistent(),
         );
 
@@ -105,6 +105,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomLinkText($formData["custom_link_text"]);
         $event->setExcludeCategoryIds($formData["exclude_category_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
+        $event->setExcludeHome($formData["exclude_home"]=== "on");
         $event->setPersistent($formData["persistent"] === "on");
 
         return $event;
@@ -133,6 +134,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomLinkText($formData["custom_link_text"]);
         $event->setExcludeCategoryIds($formData["exclude_category_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
+        $event->setExcludeHome($formData["exclude_home"] === "on");
         $event->setPersistent($formData["persistent"] === "on");
 
         return $event;
