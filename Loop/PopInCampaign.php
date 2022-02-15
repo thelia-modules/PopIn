@@ -41,6 +41,7 @@ class PopInCampaign extends BaseI18nLoop implements PropelSearchLoopInterface
                 ->set("CUSTOM_LINK",$entry->getVirtualColumn("i18n_CUSTOM_LINK"))
                 ->set("CUSTOM_LINK_TEXT",$entry->getVirtualColumn("i18n_CUSTOM_LINK_TEXT"))
                 ->set("EXCLUDE_CATEGORY_IDS",$entry->getExcludeCategoryIds())
+                ->set("EXCLUDE_FOLDER_IDS",$entry->getExcludeFolderIds())
                 ->set("EXCLUDE_CONTENT_IDS",$entry->getExcludeContentIds())
                 ->set("EXCLUDE_HOME",$entry->getExcludeHome())
                 ->set("PERSISTENT",$entry->getPersistent())

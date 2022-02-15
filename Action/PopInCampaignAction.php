@@ -13,7 +13,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Thelia\Action\BaseAction;
 use Thelia\Core\Event\TheliaEvents;
+use Thelia\Model\CategoryQuery;
 use Thelia\Model\ContentQuery;
+use Thelia\Model\FolderQuery;
+use Thelia\Model\ProductQuery;
 use TheliaLibrary\Model\Base\LibraryImage;
 use TheliaLibrary\Service\LibraryImageService;
 use TheliaLibrary\Service\LibraryItemImageService;
@@ -110,6 +113,32 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
             }
 
             $model->setExcludeCategoryIds($event->getExcludeCategoryIds());
+            $implicitlyExcludedCategoryIds = $this->getCategoryToExcludeRecursively(explode(',', $event->getExcludeCategoryIds()));
+            $model->setImplicitlyExcludedCategoryIds(implode(',', $implicitlyExcludedCategoryIds));
+
+            $implicitlyExcludedProductIds = ProductQuery::create()
+                ->select('id')
+                ->useProductCategoryQuery()
+                    ->filterByCategoryId($implicitlyExcludedCategoryIds)
+                ->endUse()
+                ->find()
+                ->toArray();
+            sort($implicitlyExcludedProductIds);
+            $model->setImplicitlyExcludedProductIds(implode(',', array_unique($implicitlyExcludedProductIds)));
+
+            $model->setExcludeFolderIds($event->getExcludeFolderIds());
+            $implicitlyExcludedFolderIds = $this->getFolderToExcludeRecursively(explode(',', $event->getExcludeFolderIds()));
+            $model->setImplicitlyExcludedFolderIds(implode(',', $implicitlyExcludedFolderIds));
+
+            $implicitlyExcludedContentIds = ContentQuery::create()
+                ->select('id')
+                ->useContentFolderQuery()
+                    ->filterByFolderId($implicitlyExcludedFolderIds)
+                ->endUse()
+                ->find()
+                ->toArray();
+            sort($implicitlyExcludedContentIds);
+            $model->setImplicitlyExcludedContentIds(implode(',', array_unique($implicitlyExcludedContentIds)));
 
             $model->setExcludeContentIds($event->getExcludeContentIds());
 
@@ -141,6 +170,28 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
         }
 
         $event->setPopInCampaign($model);
+    }
+
+    private function getFolderToExcludeRecursively(array $ids)
+    {
+        $childFolderIds = FolderQuery::create()->select('id')->filterByParent($ids)->find()->toArray();
+        $childChildFolderIds = [];
+        if (!empty($childFolderIds)) {
+            $childChildFolderIds = $this->getFolderToExcludeRecursively($childFolderIds);
+        }
+
+        return array_unique(array_merge($ids, $childFolderIds, $childChildFolderIds));
+    }
+
+    private function getCategoryToExcludeRecursively(array $ids)
+    {
+        $childCategoryIds = CategoryQuery::create()->select('id')->filterByParent($ids)->find()->toArray();
+        $childChildCategoryIds = [];
+        if (!empty($childCategoryIds)) {
+            $childChildCategoryIds = $this->getCategoryToExcludeRecursively($childCategoryIds);
+        }
+
+        return array_unique(array_merge($ids, $childCategoryIds, $childChildCategoryIds));
     }
 
     protected function getPopInCampaign(PopInCampaignEvent $event)

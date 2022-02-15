@@ -76,6 +76,7 @@ class PopInCampaignController extends AbstractCrudController
             "custom_link" => $object->getCustomLink(),
             "custom_link_text" => $object->getCustomLinkText(),
             "exclude_category_ids" => $object->getExcludeCategoryIds(),
+            "exclude_folder_ids" => $object->getExcludeFolderIds(),
             "exclude_content_ids" => $object->getExcludeContentIds(),
             "exclude_home" => $object->getExcludeHome(),
             "persistent" => $object->getPersistent(),
@@ -104,6 +105,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomPostscriptum($formData["custom_postscriptum"]);
         $event->setCustomLinkText($formData["custom_link_text"]);
         $event->setExcludeCategoryIds($formData["exclude_category_ids"]);
+        $event->setExcludeFolderIds($formData["exclude_folder_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
         $event->setExcludeHome($formData["exclude_home"]=== "on");
         $event->setPersistent($formData["persistent"] === "on");
@@ -133,6 +135,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setCustomLink($formData["custom_link"]);
         $event->setCustomLinkText($formData["custom_link_text"]);
         $event->setExcludeCategoryIds($formData["exclude_category_ids"]);
+        $event->setExcludeFolderIds($formData["exclude_folder_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
         $event->setExcludeHome($formData["exclude_home"] === "on");
         $event->setPersistent($formData["persistent"] === "on");

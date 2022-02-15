@@ -28,6 +28,7 @@ class PopInCampaignEvent extends ActionEvent
     protected $customLink;
     protected $customLinkText;
     protected $excludeCategoryIds;
+    protected $excludeFolderIds;
     protected $excludeContentIds;
     protected $excludeHome;
     protected $persistent;
@@ -223,6 +224,17 @@ class PopInCampaignEvent extends ActionEvent
     public function setExcludeCategoryIds($excludeCategoryIds)
     {
         $this->excludeCategoryIds = $excludeCategoryIds;
+        return $this;
+    }
+
+    public function getExcludeFolderIds()
+    {
+        return $this->excludeFolderIds;
+    }
+
+    public function setExcludeFolderIds($excludeFolderIds)
+    {
+        $this->excludeFolderIds = $excludeFolderIds;
         return $this;
     }
 

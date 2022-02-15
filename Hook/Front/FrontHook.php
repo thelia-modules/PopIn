@@ -74,14 +74,35 @@ class FrontHook extends BaseHook
             }
 
             $view = $this->getRequest()->attributes->get("_view");
-            if ($view === "category" && $currentCampaign->getExcludeCategoryIds() !== null) {
-                $excludedCategoriesIds = explode(',', $currentCampaign->getExcludeCategoryIds());
+            if ($view === "category" && ($currentCampaign->getExcludeCategoryIds() !== null || $currentCampaign->getImplicitlyExcludedCategoryIds() !== null)) {
+                $excludedCategoriesIds = array_merge(
+                    explode(',', $currentCampaign->getExcludeCategoryIds()),
+                    explode(',', $currentCampaign->getImplicitlyExcludedCategoryIds()),
+                );
                 if (in_array($this->getRequest()->attributes->get('category_id'), $excludedCategoriesIds)) {
                     continue;
                 }
             }
-            if ($view === "content" && $currentCampaign->getExcludeContentIds() !== null) {
-                $excludedContentsIds = explode(',', $currentCampaign->getExcludeContentIds());
+            if ($view === "product" && ($currentCampaign->getImplicitlyExcludedProductIds() !== null)) {
+                $excludedProductIds = explode(',', $currentCampaign->getImplicitlyExcludedProductIds());
+                if (in_array($this->getRequest()->attributes->get('product_id'), $excludedProductIds)) {
+                    continue;
+                }
+            }
+            if ($view === "folder" && ($currentCampaign->getExcludeFolderIds() !== null || $currentCampaign->getImplicitlyExcludedFolderIds() !== null)) {
+                $excludedFoldersIds = array_merge(
+                    explode(',', $currentCampaign->getExcludeFolderIds()),
+                    explode(',', $currentCampaign->getImplicitlyExcludedFolderIds()),
+                );
+                if (in_array($this->getRequest()->attributes->get('folder_id'), $excludedFoldersIds)) {
+                    continue;
+                }
+            }
+            if ($view === "content" && ($currentCampaign->getExcludeContentIds() !== null || $currentCampaign->getImplicitlyExcludedContentIds() !== null)) {
+                $excludedContentsIds = array_merge(
+                    explode(',', $currentCampaign->getExcludeContentIds()),
+                    explode(',', $currentCampaign->getImplicitlyExcludedContentIds()),
+                );
                 if (in_array($this->getRequest()->attributes->get('content_id'), $excludedContentsIds)) {
                     continue;
                 }

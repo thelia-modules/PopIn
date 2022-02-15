@@ -280,7 +280,7 @@
                                                         {form_field form=$form field="exclude_category_ids"}
                                                             <label for="{$name}">{intl l='Exclude category ids' d='popin.bo.default'}</label>
                                                             <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CATEGORY_IDS|default:null}"/>
-                                                            <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
+                                                            <span class="help-block">{intl l='Ids separeted by commas, all subcategory and product in this category will also be excluded' d='popin.bo.default'}</span>
                                                         {/form_field}
                                                     </div>
                                                     <div class="col-md-5 form-group">
@@ -288,6 +288,13 @@
                                                             <label for="{$name}">{intl l='Exclude content ids' d='popin.bo.default'}</label>
                                                             <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_CONTENT_IDS|default:null}"/>
                                                             <span class="help-block">{intl l='Ids separeted by commas' d='popin.bo.default'}</span>
+                                                        {/form_field}
+                                                    </div>
+                                                    <div class="col-md-5 form-group">
+                                                        {form_field form=$form field="exclude_folder_ids"}
+                                                            <label for="{$name}">{intl l='Exclude Folder ids' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_FOLDER_IDS|default:null}"/>
+                                                            <span class="help-block">{intl l='Ids separeted by commas, all subfolder and content in this folder will also be excluded' d='popin.bo.default'}</span>
                                                         {/form_field}
                                                     </div>
                                                     <div class="col-md-2 form-group">

@@ -15,6 +15,11 @@
         <column name="custom_link" type="VARCHAR" />
         <column name="custom_link_text" type="VARCHAR" />
         <column name="exclude_category_ids" type="VARCHAR" />
+        <column name="implicitly_excluded_category_ids" type="LONGVARCHAR" />
+        <column name="implicitly_excluded_product_ids" type="LONGVARCHAR" />
+        <column name="exclude_folder_ids" type="VARCHAR" />
+        <column name="implicitly_excluded_folder_ids" type="LONGVARCHAR" />
+        <column name="implicitly_excluded_content_ids" type="LONGVARCHAR" />
         <column name="exclude_content_ids" type="VARCHAR" />
         <column name="exclude_home" type="TINYINT" default="0" />
         <column name="persistent" type="TINYINT" default="0" />
