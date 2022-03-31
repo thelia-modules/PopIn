@@ -96,22 +96,12 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
             $customTitle = $event->getCustomTitle() ?? "";
             $model->setCustomTitle($customTitle);
 
-            if (null !== $customDescription = $event->getCustomDescription()) {
-                $model->setCustomDescription($customDescription);
-            }
-
-            if (null !== $customPostscriptum = $event->getCustomPostscriptum()) {
-                $model->setCustomPostscriptum($customPostscriptum);
-            }
-
-            if (null !== $customLink = $event->getCustomLink()) {
-                $model->setCustomLink($customLink);
-            }
-
-            if (null !== $customLinkText = $event->getCustomLinkText()) {
-                $model->setCustomLinkText($customLinkText);
-            }
-
+            $model
+                ->setCustomDescription($event->getCustomDescription())
+                ->setCustomPostscriptum($event->getCustomPostscriptum())
+                ->setCustomLink($event->getCustomLink())
+                ->setCustomLinkText($event->getCustomLinkText());
+            
             $model->setExcludeCategoryIds($event->getExcludeCategoryIds());
             $implicitlyExcludedCategoryIds = $this->getCategoryToExcludeRecursively(explode(',', $event->getExcludeCategoryIds()));
             $model->setImplicitlyExcludedCategoryIds(implode(',', $implicitlyExcludedCategoryIds));
