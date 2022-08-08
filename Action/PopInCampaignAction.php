@@ -101,7 +101,7 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
                 ->setCustomPostscriptum($event->getCustomPostscriptum())
                 ->setCustomLink($event->getCustomLink())
                 ->setCustomLinkText($event->getCustomLinkText());
-            
+
             $model->setExcludeCategoryIds($event->getExcludeCategoryIds());
             $implicitlyExcludedCategoryIds = $this->getCategoryToExcludeRecursively(explode(',', $event->getExcludeCategoryIds()));
             $model->setImplicitlyExcludedCategoryIds(implode(',', $implicitlyExcludedCategoryIds));
@@ -134,7 +134,7 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
 
             $model->setExcludeHome($event->getExcludeHome());
 
-            $model->setExcludeLoginRegister($event->getExcludeLoginRegister());
+            $model->setExcludeUrl($event->getExcludeUrl());
 
             $model->setPersistent($event->getPersistent());
 

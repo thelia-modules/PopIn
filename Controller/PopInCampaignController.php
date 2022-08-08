@@ -79,7 +79,7 @@ class PopInCampaignController extends AbstractCrudController
             "exclude_folder_ids" => $object->getExcludeFolderIds(),
             "exclude_content_ids" => $object->getExcludeContentIds(),
             "exclude_home" => $object->getExcludeHome(),
-            "exclude_login_register" => $object->getExcludeLoginRegister(),
+            "exclude_urlr" => $object->getExcludeUrl(),
             "persistent" => $object->getPersistent(),
         );
 
@@ -109,7 +109,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setExcludeFolderIds($formData["exclude_folder_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
         $event->setExcludeHome($formData["exclude_home"]=== "on");
-        $event->setExcludeLoginRegister($formData["exclude_login_register"]=== "on");
+        $event->setExcludeUrl($formData["exclude_url"]);
         $event->setPersistent($formData["persistent"] === "on");
 
         return $event;
@@ -140,7 +140,7 @@ class PopInCampaignController extends AbstractCrudController
         $event->setExcludeFolderIds($formData["exclude_folder_ids"]);
         $event->setExcludeContentIds($formData["exclude_content_ids"]);
         $event->setExcludeHome($formData["exclude_home"] === "on");
-        $event->setExcludeLoginRegister($formData["exclude_login_register"] === "on");
+        $event->setExcludeUrl($formData["exclude_url"]);
         $event->setPersistent($formData["persistent"] === "on");
 
         return $event;

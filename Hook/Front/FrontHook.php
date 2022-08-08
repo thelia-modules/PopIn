@@ -111,8 +111,7 @@ class FrontHook extends BaseHook
                 continue;
             }
 
-            $pathInfo = $this->getRequest()->getPathInfo();
-            if (($pathInfo === "/login" || $pathInfo === "/register") && $currentCampaign->getExcludeLoginRegister()) {
+            if (in_array($this->getRequest()->getPathInfo(), explode(',', $currentCampaign->getExcludeUrl()))) {
                 continue;
             }
 

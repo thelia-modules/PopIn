@@ -22,7 +22,7 @@
         <column name="implicitly_excluded_content_ids" type="LONGVARCHAR" />
         <column name="exclude_content_ids" type="VARCHAR" />
         <column name="exclude_home" type="TINYINT" default="0" />
-        <column name="exclude_login_register" type="TINYINT" default="0" />
+        <column name="exclude_url" type="LONGVARCHAR" />
         <column name="persistent" type="TINYINT" default="0" />
         <behavior name="i18n">
           <parameter name="i18n_columns" value="custom_title, custom_description, custom_postscriptum, custom_link, custom_link_text" />

@@ -297,16 +297,17 @@
                                                             <span class="help-block">{intl l='Ids separeted by commas, all subfolder and content in this folder will also be excluded' d='popin.bo.default'}</span>
                                                         {/form_field}
                                                     </div>
+                                                    <div class="col-md-5 form-group">
+                                                        {form_field form=$form field="exclude_url"}
+                                                            <label for="{$name}">{intl l='Exclude url' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}" name="{$name}" type="{$type}" value="{$EXCLUDE_URL|default:null}"/>
+                                                            <span class="help-block">{intl l='URL separated by commas, like "/login,/register"' d='popin.bo.default'}</span>
+                                                        {/form_field}
+                                                    </div>
                                                     <div class="col-md-2 form-group">
                                                         {form_field form=$form field="exclude_home"}
                                                             <label for="{$name}_{$popInCampaignId}">{intl l='Exclude from home' d='popin.bo.default'}</label>
                                                             <input class="form-control" id="{$name}_{$popInCampaignId}" name="{$name}" type="checkbox" {if $EXCLUDE_HOME|default:null === 1}checked{/if}/>
-                                                        {/form_field}
-                                                    </div>
-                                                    <div class="col-md-2 form-group">
-                                                        {form_field form=$form field="exclude_login_register"}
-                                                            <label for="{$name}_{$popInCampaignId}">{intl l='Exclude from login and register' d='popin.bo.default'}</label>
-                                                            <input class="form-control" id="{$name}_{$popInCampaignId}" name="{$name}" type="checkbox" {if $EXCLUDE_LOGIN_RGISTER|default:null === 1}checked{/if}/>
                                                         {/form_field}
                                                     </div>
                                                 </div>
