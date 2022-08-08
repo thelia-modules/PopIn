@@ -79,7 +79,7 @@ class PopInCampaignController extends AbstractCrudController
             "exclude_folder_ids" => $object->getExcludeFolderIds(),
             "exclude_content_ids" => $object->getExcludeContentIds(),
             "exclude_home" => $object->getExcludeHome(),
-            "exclude_urlr" => $object->getExcludeUrl(),
+            "exclude_url" => $object->getExcludeUrl(),
             "persistent" => $object->getPersistent(),
         );
 
