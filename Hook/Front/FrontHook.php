@@ -111,6 +111,11 @@ class FrontHook extends BaseHook
                 continue;
             }
 
+            $pathInfo = $this->getRequest()->getPathInfo();
+            if (($pathInfo === "/login" || $pathInfo === "/register") && $currentCampaign->getExcludeLoginRegister()) {
+                continue;
+            }
+
             $event->add(
                 $this->render(
                     'pop-in.html',

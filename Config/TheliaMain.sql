@@ -24,6 +24,7 @@ CREATE TABLE `pop_in_campaign`
     `implicitly_excluded_content_ids` TEXT,
     `exclude_content_ids` VARCHAR(255),
     `exclude_home` TINYINT DEFAULT 0,
+    `exclude_login_register` TINYINT DEFAULT 0,
     `persistent` TINYINT DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;

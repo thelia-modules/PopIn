@@ -31,6 +31,7 @@ class PopInCampaignEvent extends ActionEvent
     protected $excludeFolderIds;
     protected $excludeContentIds;
     protected $excludeHome;
+    protected $excludeLoginRegister;
     protected $persistent;
 
 
@@ -277,5 +278,17 @@ class PopInCampaignEvent extends ActionEvent
     {
         return $this->persistent;
     }
+
+    public function getExcludeLoginRegister()
+    {
+        return $this->excludeLoginRegister;
+    }
+
+    public function setExcludeLoginRegister($excludeLoginRegister)
+    {
+        $this->excludeLoginRegister = $excludeLoginRegister;
+    }
+
+
 }
 

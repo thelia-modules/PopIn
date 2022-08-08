@@ -53,6 +53,7 @@ class PopInCampaignCreateForm extends BaseForm
             "exclude_folder_ids" => "pop_in_exclude_folder_ids",
             "exclude_content_ids" => "pop_in_exclude_content_ids",
             "exclude_home" => "pop_in_exclude_home",
+            "exclude_login_register" => "pop_in_exclude_login_register",
             "persistent" => "pop_in_persistent"
         );
     }
@@ -76,6 +77,7 @@ class PopInCampaignCreateForm extends BaseForm
         $this->addTextField("exclude_folder_ids");
         $this->addTextField("exclude_content_ids");
         $this->addTextField("exclude_home");
+        $this->addTextField("exclude_login_register");
         $this->addTextField("persistent");
 
         $this->formBuilder->add(
@@ -106,6 +108,7 @@ class PopInCampaignCreateForm extends BaseForm
             "exclude_folder_ids" => "Exclude Folder ids",
             "exclude_content_ids" => "Exclude content ids",
             "exclude_home" => "Exclude home",
+            "exclude_login_register" => "Exclude login and register",
             "persistent" => "Persistent"
         );
     }

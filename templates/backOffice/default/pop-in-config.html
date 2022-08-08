@@ -303,6 +303,12 @@
                                                             <input class="form-control" id="{$name}_{$popInCampaignId}" name="{$name}" type="checkbox" {if $EXCLUDE_HOME|default:null === 1}checked{/if}/>
                                                         {/form_field}
                                                     </div>
+                                                    <div class="col-md-2 form-group">
+                                                        {form_field form=$form field="exclude_login_register"}
+                                                            <label for="{$name}_{$popInCampaignId}">{intl l='Exclude from login and register' d='popin.bo.default'}</label>
+                                                            <input class="form-control" id="{$name}_{$popInCampaignId}" name="{$name}" type="checkbox" {if $EXCLUDE_LOGIN_RGISTER|default:null === 1}checked{/if}/>
+                                                        {/form_field}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

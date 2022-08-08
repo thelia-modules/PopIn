@@ -11,6 +11,7 @@ return array(
     'Exclude category ids' => 'Ids des catégories à exclure',
     'Exclude content ids' => 'Ids des contenus à exclure',
     'Exclude from home' => 'Exclure de la page d\'accueil',
+    'Exclude from login and register' => 'Exclure de la page d\'inscription et de connexion',
     'Fill the fields below' => 'Remplissez les champs ci-dessous',
     'Ids separeted by commas' => 'Ids séparés par des virgules (ex: 2,3)',
     'Ids separeted by commas, all subcategory and product in this category will also be excluded' => 'Ids séparés par des virgules, toutes les sous-catégories et produits dans cette catégorie seront aussi exclus',

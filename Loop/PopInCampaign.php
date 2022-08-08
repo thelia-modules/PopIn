@@ -44,6 +44,7 @@ class PopInCampaign extends BaseI18nLoop implements PropelSearchLoopInterface
                 ->set("EXCLUDE_FOLDER_IDS",$entry->getExcludeFolderIds())
                 ->set("EXCLUDE_CONTENT_IDS",$entry->getExcludeContentIds())
                 ->set("EXCLUDE_HOME",$entry->getExcludeHome())
+                ->set("EXCLUDE_LOGIN_REGISTER",$entry->getExcludeLoginRegister())
                 ->set("PERSISTENT",$entry->getPersistent())
             ;
 
