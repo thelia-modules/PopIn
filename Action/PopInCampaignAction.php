@@ -103,27 +103,38 @@ class PopInCampaignAction extends BaseAction implements EventSubscriberInterface
                 ->setCustomLinkText($event->getCustomLinkText());
 
             $model->setExcludeCategoryIds($event->getExcludeCategoryIds());
-            $implicitlyExcludedCategoryIds = $this->getCategoryToExcludeRecursively(explode(',', $event->getExcludeCategoryIds()));
-            $model->setImplicitlyExcludedCategoryIds(implode(',', $implicitlyExcludedCategoryIds));
+
+            $implicitlyExcludedCategoryIds = null;
+            if ($event->getExcludeCategoryIds() !== null) {
+                $implicitlyExcludedCategoryIds = $this->getCategoryToExcludeRecursively(explode(',', $event->getExcludeCategoryIds()));
+            }
+
+            $model->setImplicitlyExcludedCategoryIds($implicitlyExcludedCategoryIds?implode(',', $implicitlyExcludedCategoryIds):null);
 
             $implicitlyExcludedProductIds = ProductQuery::create()
                 ->select('id')
                 ->useProductCategoryQuery()
-                    ->filterByCategoryId($implicitlyExcludedCategoryIds)
+                ->filterByCategoryId($implicitlyExcludedCategoryIds)
                 ->endUse()
                 ->find()
                 ->toArray();
             sort($implicitlyExcludedProductIds);
             $model->setImplicitlyExcludedProductIds(implode(',', array_unique($implicitlyExcludedProductIds)));
 
+
             $model->setExcludeFolderIds($event->getExcludeFolderIds());
-            $implicitlyExcludedFolderIds = $this->getFolderToExcludeRecursively(explode(',', $event->getExcludeFolderIds()));
-            $model->setImplicitlyExcludedFolderIds(implode(',', $implicitlyExcludedFolderIds));
+
+            $implicitlyExcludedFolderIds = null;
+            if ($event->getExcludeFolderIds() !== null) {
+                $implicitlyExcludedFolderIds = $this->getFolderToExcludeRecursively(explode(',', $event->getExcludeFolderIds()));
+            }
+
+            $model->setImplicitlyExcludedFolderIds($implicitlyExcludedFolderIds?implode(',', $implicitlyExcludedFolderIds):null);
 
             $implicitlyExcludedContentIds = ContentQuery::create()
                 ->select('id')
                 ->useContentFolderQuery()
-                    ->filterByFolderId($implicitlyExcludedFolderIds)
+                ->filterByFolderId($implicitlyExcludedFolderIds)
                 ->endUse()
                 ->find()
                 ->toArray();
