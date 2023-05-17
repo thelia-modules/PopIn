@@ -83,6 +83,7 @@ class PopInCampaign extends BaseI18nLoop implements PropelSearchLoopInterface
         return new ArgumentCollection(
             Argument::createIntListTypeArgument("id"),
             Argument::createAnyTypeArgument("content_source_type"),
+            Argument::createAnyTypeArgument("exclude_content_source_type"),
             Argument::createAnyTypeArgument("content_source_id"),
             Argument::createEnumListTypeArgument(
                 "order",
@@ -114,6 +115,11 @@ class PopInCampaign extends BaseI18nLoop implements PropelSearchLoopInterface
 
         if (null !== $id = $this->getId()) {
             $query->filterById($id);
+        }
+
+        if (null !== $exclude_content_source_type = $this->getExcludeContentSourceType()) {
+            $exclude_content_source_type = array_map("trim", explode(",", $exclude_content_source_type));
+            $query->filterByContentSourceType($exclude_content_source_type, Criteria::NOT_IN);
         }
 
         if (null !== $content_source_type = $this->getContentSourceType()) {
