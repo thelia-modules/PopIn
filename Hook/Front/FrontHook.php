@@ -150,6 +150,6 @@ class FrontHook extends BaseHook
      */
     public function onMainStylesheet(HookRenderEvent $event)
     {
-        $event->add($this->addCSS('assets/less/pop-in.less', [], 'less'));
+        $event->add($this->addCSS('assets/css/pop-in.css'));
     }
 }
