@@ -7,6 +7,7 @@
 namespace PopIn\Form\Type;
 
 use PopIn\Model\PopInCampaignQuery;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Thelia\Core\Form\Type\Field\AbstractIdType;
 
 /**
@@ -15,7 +16,7 @@ use Thelia\Core\Form\Type\Field\AbstractIdType;
  */
 class PopInCampaignIdType extends AbstractIdType
 {
-    protected function getQuery()
+    protected function getQuery(): ModelCriteria
     {
         return new PopInCampaignQuery();
     }

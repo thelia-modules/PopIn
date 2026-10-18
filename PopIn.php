@@ -40,7 +40,7 @@ class PopIn extends BaseModule
         $this->createPopInImageFolder();
     }
 
-    public function getHooks()
+    public function getHooks(): array
     {
         return [
             [
