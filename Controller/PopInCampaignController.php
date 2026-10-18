@@ -7,13 +7,17 @@ use PopIn\Event\PopInCampaignEvents;
 use PopIn\Model\PopInCampaign;
 use PopIn\Model\PopInCampaignQuery;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Thelia\Controller\Admin\AbstractCrudController;
+use Thelia\Core\Event\ActionEvent;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Template\ParserContext;
+use Thelia\Form\BaseForm;
 use Thelia\Tools\URL;
 
 /**
@@ -40,7 +44,7 @@ class PopInCampaignController extends AbstractCrudController
     /**
      * Return the creation form for this object
      */
-    protected function getCreationForm()
+    protected function getCreationForm(): BaseForm
     {
         return $this->createForm("pop_in_campaign.create");
     }
@@ -48,7 +52,7 @@ class PopInCampaignController extends AbstractCrudController
     /**
      * Return the update form for this object
      */
-    protected function getUpdateForm($data = array())
+    protected function getUpdateForm($data = array()): BaseForm
     {
         if (!is_array($data)) {
             $data = array();
@@ -62,7 +66,7 @@ class PopInCampaignController extends AbstractCrudController
      *
      * @param PopInCampaign $object
      */
-    protected function hydrateObjectForm(ParserContext $parserContext, $object)
+    protected function hydrateObjectForm(ParserContext $parserContext, $object): BaseForm
     {
         $data = array(
             "id" => $object->getId(),
@@ -92,7 +96,7 @@ class PopInCampaignController extends AbstractCrudController
      * @param mixed $formData
      * @return \Thelia\Core\Event\ActionEvent
      */
-    protected function getCreationEvent($formData)
+    protected function getCreationEvent($formData): ActionEvent
     {
         $event = new PopInCampaignEvent();
 
@@ -121,7 +125,7 @@ class PopInCampaignController extends AbstractCrudController
      * @param mixed $formData
      * @return \Thelia\Core\Event\ActionEvent
      */
-    protected function getUpdateEvent($formData)
+    protected function getUpdateEvent($formData): ActionEvent
     {
         $event = new PopInCampaignEvent();
 
@@ -149,7 +153,7 @@ class PopInCampaignController extends AbstractCrudController
     /**
      * Creates the delete event with the provided form data
      */
-    protected function getDeleteEvent()
+    protected function getDeleteEvent(): ActionEvent
     {
         $event = new PopInCampaignEvent();
 
@@ -163,7 +167,7 @@ class PopInCampaignController extends AbstractCrudController
      *
      * @param mixed $event
      */
-    protected function eventContainsObject($event)
+    protected function eventContainsObject($event): bool
     {
         return null !== $this->getObjectFromEvent($event);
     }
@@ -173,7 +177,7 @@ class PopInCampaignController extends AbstractCrudController
      *
      * @param mixed $event
      */
-    protected function getObjectFromEvent($event)
+    protected function getObjectFromEvent($event): mixed
     {
         return $event->getPopInCampaign();
     }
@@ -181,7 +185,7 @@ class PopInCampaignController extends AbstractCrudController
     /**
      * Load an existing object from the database
      */
-    protected function getExistingObject()
+    protected function getExistingObject(): ?ActiveRecordInterface
     {
         return PopInCampaignQuery::create()
             ->findPk($this->getRequest()->query->get("pop_in_campaign_id"))
@@ -193,7 +197,7 @@ class PopInCampaignController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function getObjectLabel($object)
+    protected function getObjectLabel($object): ?string
     {
         return '';
     }
@@ -203,7 +207,7 @@ class PopInCampaignController extends AbstractCrudController
      *
      * @param mixed $object
      */
-    protected function getObjectId($object)
+    protected function getObjectId($object): int
     {
         return $object->getId();
     }
@@ -213,7 +217,7 @@ class PopInCampaignController extends AbstractCrudController
      *
      * @param mixed $currentOrder , if any, null otherwise.
      */
-    protected function renderListTemplate($currentOrder)
+    protected function renderListTemplate($currentOrder): Response
     {
         $this->getParser()
             ->assign("order", $currentOrder)
@@ -225,7 +229,7 @@ class PopInCampaignController extends AbstractCrudController
     /**
      * Render the edition template
      */
-    protected function renderEditionTemplate()
+    protected function renderEditionTemplate(): Response
     {
         $this->getParserContext()
             ->set(
@@ -241,7 +245,7 @@ class PopInCampaignController extends AbstractCrudController
      * Must return a RedirectResponse instance
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function redirectToEditionTemplate()
+    protected function redirectToEditionTemplate(): RedirectResponse
     {
         $id = $this->getRequest()->query->get("pop_in_campaign_id");
 
@@ -259,7 +263,7 @@ class PopInCampaignController extends AbstractCrudController
      * Must return a RedirectResponse instance
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function redirectToListTemplate()
+    protected function redirectToListTemplate(): RedirectResponse
     {
         return new RedirectResponse(
             URL::getInstance()->absoluteUrl("/admin/module/PopIn")

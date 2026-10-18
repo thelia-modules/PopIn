@@ -7,9 +7,9 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Propel;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 use Symfony\Component\Finder\Finder;
+use Thelia\Core\Install\Database;
 use Thelia\Core\Template\TemplateDefinition;
 use Thelia\Core\Translation\Translator;
-use Thelia\Install\Database;
 use Thelia\Model\Config;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Folder;
@@ -30,7 +30,7 @@ class PopIn extends BaseModule
 
     const CONF_KEY_IMAGE_FOLDER_ID = "popin.image_folder_id";
 
-    public function postActivation(ConnectionInterface $con = null): void
+    public function postActivation(?ConnectionInterface $con = null): void
     {
         if (!self::getConfigValue('is_initialized', false)) {
             $database = new Database($con);
@@ -40,7 +40,7 @@ class PopIn extends BaseModule
         $this->createPopInImageFolder();
     }
 
-    public function getHooks()
+    public function getHooks(): array
     {
         return [
             [
@@ -68,6 +68,12 @@ class PopIn extends BaseModule
         if (null !== $imageFolderIdConfig && null !== FolderQuery::create()->findPk($imageFolderIdConfig->getValue())) {
             // we already have and know our images folder
             return;
+        }
+
+        // Saving a folder generates its rewritten URL, which needs the URL service to be instantiated.
+        // The HTTP kernel and the console commands do it, but not the post-activation run at install time.
+        if ($this->hasContainer()) {
+            $this->getContainer()->get('thelia.url.manager');
         }
 
         Propel::getConnection()->beginTransaction();
@@ -143,12 +149,12 @@ class PopIn extends BaseModule
     public static function configureServices(ServicesConfigurator $servicesConfigurator): void
     {
         $servicesConfigurator->load(self::getModuleCode().'\\', __DIR__)
-            ->exclude([THELIA_MODULE_DIR . ucfirst(self::getModuleCode()). "/I18n/*"])
+            ->exclude([__DIR__.'/I18n/*'])
             ->autowire(true)
             ->autoconfigure(true);
     }
 
-    public function update($currentVersion, $newVersion, ConnectionInterface $con = null): void
+    public function update($currentVersion, $newVersion, ?ConnectionInterface $con = null): void
     {
         $finder = Finder::create()
             ->name('*.sql')
