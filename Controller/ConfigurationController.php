@@ -3,7 +3,7 @@
 namespace PopIn\Controller;
 
 use Thelia\Controller\Admin\BaseAdminController;
-use Thelia\Core\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Module configuration controller.

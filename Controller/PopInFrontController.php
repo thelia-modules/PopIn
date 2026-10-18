@@ -4,9 +4,9 @@ namespace PopIn\Controller;
 
 use PopIn\Hook\Front\FrontHook;
 use Thelia\Controller\Front\BaseFrontController;
-use Thelia\Core\HttpFoundation\Request;
-use Thelia\Core\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Thelia\Core\HttpFoundation\Request;
 
 class PopInFrontController extends BaseFrontController
 {
