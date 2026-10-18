@@ -30,7 +30,7 @@ class PopIn extends BaseModule
 
     const CONF_KEY_IMAGE_FOLDER_ID = "popin.image_folder_id";
 
-    public function postActivation(ConnectionInterface $con = null): void
+    public function postActivation(?ConnectionInterface $con = null): void
     {
         if (!self::getConfigValue('is_initialized', false)) {
             $database = new Database($con);
@@ -148,7 +148,7 @@ class PopIn extends BaseModule
             ->autoconfigure(true);
     }
 
-    public function update($currentVersion, $newVersion, ConnectionInterface $con = null): void
+    public function update($currentVersion, $newVersion, ?ConnectionInterface $con = null): void
     {
         $finder = Finder::create()
             ->name('*.sql')
