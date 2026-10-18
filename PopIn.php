@@ -70,6 +70,12 @@ class PopIn extends BaseModule
             return;
         }
 
+        // Saving a folder generates its rewritten URL, which needs the URL service to be instantiated.
+        // The HTTP kernel and the console commands do it, but not the post-activation run at install time.
+        if ($this->hasContainer()) {
+            $this->getContainer()->get('thelia.url.manager');
+        }
+
         Propel::getConnection()->beginTransaction();
 
         try {
